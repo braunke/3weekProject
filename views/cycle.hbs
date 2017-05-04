@@ -1,0 +1,36 @@
+<h1>{{{cycle.name}}}</h1>
+<table>
+
+    <thead>
+        <tr>
+            <th>Week</th>
+            <th>Day One Back Squat</th>
+            <th>Day Two Front Squat</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each cycle.weeks as |week wkIndex|}}
+            <tr>
+                <td>Week of #</td>
+                {{#each week.days as |day dayIndex|}}
+                    <td><br><a href="/workout/{{wkIndex}}/{{dayIndex}}">
+                        {{#each day.sets as |set|}}
+                            1 X  {{set.reps}} at {{ set.weightPercentage }}<br>
+                        {{/each}}
+                    </a>
+                    </td>
+                {{/each}}
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<style>
+    table {
+        width: 100%;
+    }
+    td, th {
+        width: 33%;
+        text-align: center;
+    }
+</style>
