@@ -118,6 +118,14 @@ var liftingProgram = {
         days: [dayFive, daySix]
     }]};
 
+router.post('/', function(req, res, next){
+    var userInfo = {};
+    for (var field in req.body){
+        if (req.body[field]){
+            userInfo[field] = req.body[field];
+        }
+    }
+});
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('cycle', {
@@ -131,6 +139,11 @@ router.get('/workout/:week/:day', function(req, res, next) {
     res.render('workout', {
         title: 'Workout',
         day: day
+    });
+});
+router.get('/info', function(req, res, next) {
+    res.render('info',{
+        title: 'Info'
     });
 });
 
