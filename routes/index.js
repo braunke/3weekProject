@@ -117,15 +117,18 @@ var liftingProgram = {
     },{
         days: [dayFive, daySix]
     }]};
-
-router.post('/', function(req, res, next){
-    var userInfo = {};
-    for (var field in req.body){
-        if (req.body[field]){
-            userInfo[field] = req.body[field];
+var userLiftingProgram = {
+    program: liftingProgram,
+    startDate: new Date(),
+    user: {
+        name: 'Jim',
+        max: {
+            'Back Squat': 200,
+            'Front Squat': 100
         }
     }
-});
+};
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('cycle', {

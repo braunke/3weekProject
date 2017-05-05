@@ -16,7 +16,7 @@
                 {{#each week.days as |day dayIndex|}}
                     <td><br><a href="/workout/{{wkIndex}}/{{dayIndex}}">
                         {{#each day.sets as |set|}}
-                            1 X  {{set.reps}} at {{ set.weightPercentage }}<br>
+                            1 X  {{set.reps}} at {{ multiply set.weightPercentage 100 }}%<br>
                         {{/each}}
                     </a>
                     </td>
