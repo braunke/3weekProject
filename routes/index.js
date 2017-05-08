@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
-
+var Cycle = require('../models/cycle.js');
+var User = require('../models/user.js');
+var userCycle = require('../models/userCycle.js');
 var TYPES = {
     FSQUAT: 'Front Squat',
     BSQUAT: 'Back Squat'
@@ -131,10 +133,15 @@ var userLiftingProgram = {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('cycle', {
-      title: 'Express',
-      cycle: liftingProgram
-  });
+    Cycle.findOne({name:'Hatch Cycle'}, function(err, cycle) {
+        if (err) {
+            return next(err);
+        }
+        res.render('cycle', {
+            title: cycle.name,
+            cycle: cycle
+        });
+    });
 });
 router.get('/workout/:week/:day', function(req, res, next) {
 

@@ -4,18 +4,22 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+
 var hbs = require('express-handlebars');
-var assert = require('assert');
-var MongoClient = require('mongodb').MongoClient;
+//var assert = require('assert');
+//var MongoClient = require('mongodb').MongoClient;
 var index = require('./routes/index');
 var users = require('./routes/users');
+var seed = require('./seed');
 var helpers = require('handlebars-helpers')();
 
 var app = express();
 var mongo_pw = process.env.MONGO_PW;
 var url = 'mongodb://userAdmin:' + mongo_pw + '@localhost:27017/weight?authSource=admin';
-MongoClient.connect(url, function(err, db) {
-    assert.equal(null, err);
+mongoose.connect(url);
+seed();
 
 
 // view engine setup
@@ -41,10 +45,7 @@ MongoClient.connect(url, function(err, db) {
     app.use(bodyParser.urlencoded({extended: false}));
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, 'public')));
-    app.use('/', function (req, res, next) {
-        req.db = db;
-        next();
-    });
+
     app.use('/', index);
     app.use('/users', users);
 
@@ -72,5 +73,5 @@ MongoClient.connect(url, function(err, db) {
             error: {}
         })
     });
-});
+
 module.exports = app;

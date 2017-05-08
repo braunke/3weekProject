@@ -7,14 +7,16 @@
   },
   "dependencies": {
     "assert": "1.4.1",
+    "bluebird": "^3.5.0",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
     "express-handlebars": "~3.0.0",
-    "mongodb": "2.2.24",
     "handlebars-helpers": "^0.8.2",
     "hbs": "~4.0.1",
+    "mongodb": "2.2.24",
+    "mongoose": "^4.9.7",
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2"
   }
