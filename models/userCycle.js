@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userCycleSchema = new Schema({
-    user : mongoose.Schema.Types.ObjectId,
-    cycle : mongoose.Schema.Types.ObjectId,
+    user : { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    cycle : { type: mongoose.Schema.Types.ObjectId, ref: 'Cycle' },
     startDate : Date
 });
 var UserCycle = mongoose.model('UserCycle', userCycleSchema);

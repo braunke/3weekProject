@@ -1,0 +1,3 @@
+{{#each userCycles as |userCycle|}}
+    <a href="/user/cycle/{{userCycle._id}}">{{userCycle.user.name}} {{userCycle.cycle.name}}</a><br>
+{{/each}}

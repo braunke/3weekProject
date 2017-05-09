@@ -2,157 +2,61 @@ var express = require('express');
 var router = express.Router();
 var Cycle = require('../models/cycle.js');
 var User = require('../models/user.js');
-var userCycle = require('../models/userCycle.js');
-var TYPES = {
-    FSQUAT: 'Front Squat',
-    BSQUAT: 'Back Squat'
-};
-var dayOne = {
-    sets: [{
-        weightPercentage: .60,
-        reps: 10
-    }, {
-        weightPercentage: .70,
-        reps: 8
-    }, {
-        weightPercentage: .75,
-        reps: 6
-    },{
-        weightPercentage: .80,
-        reps: 4
-    }],
-    movement: TYPES.BSQUAT
-};
-var dayTwo = {
-    sets: [{
-        weightPercentage: .60,
-        reps: 10
-    }, {
-        weightPercentage: .70,
-        reps: 8
-    }, {
-        weightPercentage: .75,
-        reps: 6
-    },{
-        weightPercentage: .80,
-        reps: 4
-    }],
-    movement: TYPES.FSQUAT
-};
-var dayThree = {
-    sets: [{
-        weightPercentage: .60,
-        reps: 10
-    }, {
-        weightPercentage: .65,
-        reps: 8
-    }, {
-        weightPercentage: .70,
-        reps: 6
-    },{
-        weightPercentage: .75,
-        reps: 6
-    },{
-        weightPercentage: .80,
-        reps: 6
-    }],
-    movement: TYPES.BSQUAT
-};
-var dayFour = {
-    sets: [{
-        weightPercentage: .60,
-        reps: 10
-    }, {
-        weightPercentage: .65,
-        reps: 8
-    }, {
-        weightPercentage: .70,
-        reps: 6
-    },{
-        weightPercentage: .75,
-        reps: 6
-    },{
-        weightPercentage: .80,
-        reps: 6
-    }],
-    movement: TYPES.FSQUAT
-};
-var dayFive= {
-    sets: [{
-        weightPercentage: .65,
-        reps: 8
-    }, {
-        weightPercentage: .70,
-        reps: 8
-    }, {
-        weightPercentage: .80,
-        reps: 6
-    },{
-        weightPercentage: .85,
-        reps: 6
-    }],
-    movement: TYPES.BSQUAT
-};
-var daySix= {
-    sets: [{
-        weightPercentage: .65,
-        reps: 8
-    }, {
-        weightPercentage: .70,
-        reps: 8
-    }, {
-        weightPercentage: .80,
-        reps: 6
-    },{
-        weightPercentage: .85,
-        reps: 6
-    }],
-    movement: TYPES.FSQUAT
-};
-var liftingProgram = {
-    name: 'Hatch Cycle',
-
-    weeks: [{
-        days: [dayOne, dayTwo]
-    }, {
-        days: [dayThree, dayFour]
-    },{
-        days: [dayFive, daySix]
-    }]};
-var userLiftingProgram = {
-    program: liftingProgram,
-    startDate: new Date(),
-    user: {
-        name: 'Jim',
-        max: {
-            'Back Squat': 200,
-            'Front Squat': 100
-        }
-    }
-};
+var UserCycle = require('../models/userCycle.js');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-    Cycle.findOne({name:'Hatch Cycle'}, function(err, cycle) {
+router.get('/user/cycle/:id', function(req, res, next) {
+    UserCycle.findById(req.params.id)
+        .populate('user cycle')
+        .exec(function(err, userCycle) {
         if (err) {
             return next(err);
-        }console.log(cycle)
+        }
+        var cycle = userCycle.cycle;
         res.render('cycle', {
             title: cycle.name,
-            cycle: cycle
+            cycle: cycle,
+            userCycleId: userCycle._id
         });
     });
 });
 router.get('/workout/:id/:week/:day', function(req, res, next) {
-    Cycle.findById(req.params.id, function(err, cycle){
-        if (err){
+    UserCycle.findById(req.params.id)
+        .populate('user cycle')
+        .exec(function(err, userCycle) {
+            if (err){
+                return next(err);
+            }
+            var cycle = userCycle.cycle;
+            return res.render('workout', {
+                title: 'Workout',
+                day: cycle.weeks[req.params.week].days[req.params.day]
+            })
+        });
+});
+router.get('/user/:id/cycles', function(req, res, next) {
+    UserCycle.find({user: req.params.id})
+        .populate('user cycle')
+        .exec(function(err, userCycles) {
+            if (err) {
+                return next(err);
+            }
+            res.render('user_cycles', {
+                title: 'User Cycles',
+                userCycles: userCycles
+            });
+        });
+});
+router.get('/users', function(req, res, next) {
+    User.find({}, function(err, users) {
+        if (err) {
             return next(err);
         }
-        return res.render('workout', {
-            title: 'Workout',
-            day: cycle.weeks[req.params.week].days[req.params.day]
-        })
-    })
+        res.render('users', {
+            title: 'Users',
+            users: users
+        });
+    });
 });
 router.get('/info', function(req, res, next) {
     res.render('info',{
