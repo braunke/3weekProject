@@ -127,10 +127,8 @@ function seed() {
             }]};
         var user =  {
             name: 'Jim',
-            max: {
-                'Back Squat': 200,
-                'Front Squat': 100
-            }
+            Max: [{LiftType:'Back Squat', Weight : 200},
+                {LiftType:'Front Squat', Weight : 100}]
         };
 
         new User (user).save(function(err, newUser) {

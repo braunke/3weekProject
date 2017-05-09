@@ -28,13 +28,15 @@ seed();
         //helper for hbs to calculate weight needed for each movement
         helpers: {
             lift: function (user, movement, percent) {
+
                 var index;
-                for (x = 0; x < user.Max.length; x++ )
+                for (x = 0; x < user.length; x++ )
                 {
-                    if (user.Max[x].LiftType == movement)
+
+                    if (user[x].LiftType === movement)
                     {index = x}
                 }
-                var max = user.Max[index].Weight; // grab max from user
+                var max = user[index].Weight; // grab max from user
                 return max * percent;
             }
         },

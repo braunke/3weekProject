@@ -28,9 +28,11 @@ router.get('/workout/:id/:week/:day', function(req, res, next) {
                 return next(err);
             }
             var cycle = userCycle.cycle;
+            var user = userCycle.user;
             return res.render('workout', {
                 title: 'Workout',
-                day: cycle.weeks[req.params.week].days[req.params.day]
+                day: cycle.weeks[req.params.week].days[req.params.day],
+                user : user.Max
             })
         });
 });
