@@ -136,20 +136,23 @@ router.get('/', function(req, res, next) {
     Cycle.findOne({name:'Hatch Cycle'}, function(err, cycle) {
         if (err) {
             return next(err);
-        }
+        }console.log(cycle)
         res.render('cycle', {
             title: cycle.name,
             cycle: cycle
         });
     });
 });
-router.get('/workout/:week/:day', function(req, res, next) {
-
-    var day = liftingProgram.weeks[req.params.week].days[req.params.day];
-    res.render('workout', {
-        title: 'Workout',
-        day: day
-    });
+router.get('/workout/:id/:week/:day', function(req, res, next) {
+    Cycle.findById(req.params.id, function(err, cycle){
+        if (err){
+            return next(err);
+        }
+        return res.render('workout', {
+            title: 'Workout',
+            day: cycle.weeks[req.params.week].days[req.params.day]
+        })
+    })
 });
 router.get('/info', function(req, res, next) {
     res.render('info',{
