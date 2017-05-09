@@ -25,10 +25,16 @@ seed();
 // view engine setup
     app.set('views', path.join(__dirname, 'views'));
     app.engine('.hbs', hbs({
-        //helper for hbs to calcualte weight needed for each movementd
+        //helper for hbs to calculate weight needed for each movement
         helpers: {
             lift: function (user, movement, percent) {
-                var max = 200; // grab max from user
+                var index;
+                for (x = 0; x < user.Max.length; x++ )
+                {
+                    if (user.Max[x].LiftType == movement)
+                    {index = x}
+                }
+                var max = user.Max[index].Weight; // grab max from user
                 return max * percent;
             }
         },

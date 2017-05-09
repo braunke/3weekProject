@@ -2,7 +2,7 @@
 <h2>Workout</h2>
 {{#each day.sets as |set|}}
     1 X  {{set.reps}} at  {{ multiply set.weightPercentage 100 }}%
-    <span onclick="selectedWeight({{ lift 'Jim' day.movement set.weightPercentage }})">{{ lift 'Jim' day.movement set.weightPercentage }}</span><br>
+    <span onclick="selectedWeight({{ lift name day.movement set.weightPercentage }})">{{ lift name day.movement set.weightPercentage }}</span><br>
 {{/each}}
 <a href="/">Back</a>
 <div id="canvasWrapper">
@@ -24,6 +24,6 @@
 
 
 {{#if  day.sets.length}}
-<script>    selectedWeight({{lift 'Jim' day.movement day.sets.[0].weightPercentage}})
+<script>    selectedWeight({{lift name day.movement day.sets.[0].weightPercentage}})
 </script>
 {{/if}}
