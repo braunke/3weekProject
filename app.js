@@ -16,8 +16,10 @@ var helpers = require('handlebars-helpers')();
 
 var app = express();
 var mongo_pw = process.env.MONGO_PW;
-var url = 'mongodb://userAdmin:' + mongo_pw + '@localhost:27017/weight?authSource=admin';
+var url = process.env.MONGO_URL;
+//var url = 'mongodb://userAdmin:' + mongo_pw + '@localhost:27017/weight?authSource=admin';
 mongoose.connect(url);
+
 seed();
 
 
