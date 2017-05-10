@@ -1,3 +1,7 @@
 {{#each users as |user|}}
-    <a href="/user/{{user._id}}/cycles">{{user.name}}</a><br>
+    <p>
+        <strong>{{user.name}}</strong>
+        <a href="/user/{{user._id}}/cycles">Cycles</a>
+        <a href="/user/{{user._id}}">Edit</a>
+    </p>
 {{/each}}

@@ -1,11 +1,11 @@
-<h1>{week}</h1>
+<h1>Week of {{ weekDate userCycle.startDate weekIndex }} - Day {{ add dayIndex 1 }}</h1>
 <h2>Workout</h2>
 {{#each day.sets as |set|}}
     1 X  {{set.reps}} at  {{ multiply set.weightPercentage 100 }}%
-    <span onclick="selectedWeight({{ lift ../user ../day.movement set.weightPercentage }})">{{ lift ../user ../day.movement set.weightPercentage }}</span><br>
+    <span onclick="selectedWeight({{ liftWeight ../userCycle.user ../day.movement set.weightPercentage }})">{{ liftWeight ../userCycle.user ../day.movement set.weightPercentage }}</span><br>
 {{/each}}
 
-<a href="/">Back</a>
+<a href="#">Back</a>
 <div id="canvasWrapper">
     <p><em>Showing one end of bar</em></p>
     <!--creates canvas for graphic of plates-->
@@ -13,18 +13,18 @@
     <!--text that only shows when weight dont work out evenly-->
     <p id="changePlatesText"><em>*Bar loaded with plates shown equals <span id="plateTotal"></span> lbs.  Add change plates totaling <span id="weightRemaining"></span> lbs to each end of the bar to meet your target weight.</em></p>
 </div>
+
 <script>
     function selectedWeight(weight){
         calculate(weight, 33);
     }
 </script>
-<script src="/javascripts/weightConfigs.js"></script>
 
+<script src="/javascripts/weightConfigs.js"></script>
 <script src="/javascripts/weights.js"></script>
 
-
-
 {{#if  day.sets.length}}
-<script>    selectedWeight({{lift user day.movement day.sets.[0].weightPercentage}})
-</script>
+    <script>
+        selectedWeight({{liftWeight userCycle.user day.movement day.sets.[0].weightPercentage}})
+    </script>
 {{/if}}

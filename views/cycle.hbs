@@ -1,4 +1,4 @@
-<h1>{{{cycle.name}}}</h1>
+<h1>{{{title}}}</h1>
 <h5><a href ="/info">Back to main page</a></h5>
 <table>
 
@@ -10,12 +10,11 @@
         </tr>
     </thead>
     <tbody>
-        {{#each cycle.weeks as |week wkIndex|}}
+        {{#each userCycle.cycle.weeks as |week wkIndex|}}
             <tr>
-                <td>Week of #</td>
+                <td>Week of {{ weekDate ../userCycle.startDate wkIndex }}</td>
                 {{#each week.days as |day dayIndex|}}
-
-                    <td><br><a href="/workout/{{../../userCycleId}}/{{wkIndex}}/{{dayIndex}}">
+                    <td><br><a href="/workout/{{../../userCycle._id}}/{{wkIndex}}/{{dayIndex}}">
                         {{#each day.sets as |set|}}
                             1 X  {{set.reps}} at {{ multiply set.weightPercentage 100 }}%<br>
                         {{/each}}

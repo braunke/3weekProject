@@ -1,0 +1,55 @@
+<h1>Enter Your Info</h1>
+<form onsubmit="submitUser(event)">
+    <input type="hidden" name="_id" value="{{user._id}}">
+    Name <input type="text" name="name" value="{{user.name}}"required><br>
+    <div>
+        <p>One Rep Max:</p>
+        {{#each lifts as |lift| }}
+            {{ lift.name }} <input type="text" name="{{ maxInputName lift }}" value="{{ liftWeight ../user lift.name 1 }}"><br>
+        {{/each}}
+    </div>
+    <button>Submit</button>
+</form>
+<script>
+    function submitUser(event) {
+        event.preventDefault();
+        clearErrorStates();
+        var user = {
+            name: getName(),
+            Max: getMax()
+        };
+        $.ajax({
+            method: 'PUT',
+            data: {user: JSON.stringify(user)},
+            url: '/user'
+        })
+        .done(function(result){
+            console.log(result);
+        })
+        .fail(function(err){
+            console.log('done but bad news bears');
+        })
+        return false;
+    }
+    function clearErrorStates() {
+
+    }
+    function getName() {
+        return $('input[name="name"]').val();
+    }
+    function getMax() {
+        var maxInputs = $('input[name^="max"]');
+        var Max = [];
+        maxInputs.each(function(index, element) {
+            element = $(element);
+            Max.push({
+                LiftType: fromMaxInputName(element.attr('name')),
+                Weight: parseInt(element.val())
+            });
+        });
+        return Max;
+    }
+    function fromMaxInputName(maxInputName) {
+        return maxInputName.split('_').slice(1).join(' ');
+    }
+</script>
