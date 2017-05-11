@@ -42,7 +42,7 @@ app.engine('.hbs', hbs({
                     }
                 }
                 var max = user.Max[index].Weight; // grab max from user
-                return max * percent;
+                return parseFloat((max * percent).toFixed(2)); // limit to maximum of 2 decimal digits
             }
             return '';
         },
