@@ -1,11 +1,10 @@
 # project3
-lifting program project
-<nav>
-    <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a> &gt;
-    <strong>About</strong>
-</nav>
+<h1>Lifting Program Project</h1>
 
-<h1>Weightlifting Programming</h1>
+<h2>Running</h2>
+<p>To run locally jsut need to set a local mongo conenction for the url.</p>
+
+<h2>About</h2>
 <br>
 <p>
     This project is meant to help users calculate what they need to lift for different weight cycles that are based
@@ -24,5 +23,3 @@ lifting program project
     both the front and the back squat. For example, on day one the sets is 1X10 at 60%. If your one rep max is 200lbs
     for the back squat, 60% of that would be 120 and you would lift that 10 times.
 </p>
-To run
- To run locally jsut need to set a local mongo conenction for the url. 
