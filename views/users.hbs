@@ -1,7 +1,12 @@
+<nav>
+    <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a> &gt;
+    <strong href="/users">Users</strong>
+</nav>
+
+<h1>Users</h1>
+
 {{#each users as |user|}}
     <p>
-        <strong>{{user.name}}</strong>
-        <a href="/user/{{user._id}}/cycles">Cycles</a>
-        <a href="/user/{{user._id}}">Edit</a>
+        <a href="/user/{{user._id}}">{{user.name}}</a>
     </p>
 {{/each}}

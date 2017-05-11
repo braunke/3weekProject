@@ -16,8 +16,7 @@ var helpers = require('handlebars-helpers')();
 
 var app = express();
 var mongo_pw = process.env.MONGO_PW;
-var url = process.env.MONGO_URL;
-//var url = 'mongodb://userAdmin:' + mongo_pw + '@localhost:27017/weight?authSource=admin';
+var url = 'mongodb://userAdmin:' + mongo_pw + '@localhost:27017/weight?authSource=admin';
 mongoose.connect(url);
 
 seed();
@@ -30,19 +29,25 @@ app.engine('.hbs', hbs({
     helpers: {
         liftWeight: function (user, movement, percent) {
 
-            var index;
-            for (x = 0; x < user.Max.length; x++ )
-            {
-                console.log(user.Max[x].LiftType, movement);
-                if (user.Max[x].LiftType === movement)
-                {index = x}
+            if (user) {
+                var index;
+                for (x = 0; x < user.Max.length; x++) {
+                    console.log(user.Max[x].LiftType, movement);
+                    if (user.Max[x].LiftType === movement) {
+                        index = x
+                    }
+                }
+                var max = user.Max[index].Weight; // grab max from user
+                return max * percent;
             }
-            var max = user.Max[index].Weight; // grab max from user
-            return max * percent;
+            return '';
         },
         weekDate: function (startDate, weekIndex) {
             // use moment library to make date math easy!
             return moment(startDate).add(weekIndex, 'weeks').format('MMMM Do, YYYY');
+        },
+        dateFormat: function (startDate) {
+            return moment(startDate).format('MMMM Do, YYYY');
         },
         maxInputName: function (lift) {
             return 'max_' + lift.name.split(' ').join('_');

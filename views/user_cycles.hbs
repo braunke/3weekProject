@@ -1,3 +1,37 @@
-{{#each userCycles as |userCycle|}}
-    <a href="/user/cycle/{{userCycle._id}}">{{userCycle.user.name}} {{userCycle.cycle.name}}</a><br>
-{{/each}}
+<nav>
+    <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a> &gt;
+    <a href="/users">Users</a> &gt;
+    <strong>{{  user.name }}</strong>
+</nav>
+
+<section class="user-form">
+    <h1 class="text-primary">{{ user.name }}</h1>
+    <hr class="hr-primary">
+    <p class="text-right">
+        <a href="/user/{{user._id}}/edit"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+    </p>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Max Lifts</div>
+        <div class="panel-body">
+            {{#each lifts as |lift| }}
+                <p>
+                    <strong class="col-sm-6">{{ lift.name }}</strong>
+                    <span class="com-sm-6">{{ liftWeight ../user lift.name 1 }}</span>
+                </p>
+            {{/each}}
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Cycles</div>
+        <div class="panel-body">
+            {{#each userCycles as |userCycle|}}
+                <p class="clearfix">
+                    <a href="/user/cycle/{{userCycle._id}}">
+                        <span class="col-sm-6">{{userCycle.cycle.name}}</span>
+                        <span class="col-sm-6">{{ dateFormat userCycle.startDate}}</span>
+                    </a>
+                </p>
+            {{/each}}
+        </div>
+    </div>
+</section>

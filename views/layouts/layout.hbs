@@ -1,112 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{title}}</title>
-      <!--used bootstrap to style page -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-      <!--used some jquery -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!--used bootstrap to style page -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--used some jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
     {{{body}}}
-  <script>
-      var TYPES = {
-          FSQUAT: 'Front Squat',
-          BSQUAT: 'Back Squat'
-      };
-      var dayOne = {
-          sets: [{
-              weightPercentage: .60,
-              reps: 10
-          }, {
-              weightPercentage: .70,
-              reps: 8
-          }, {
-              weightPercentage: .75,
-              reps: 6
-          },{
-              weightPercentage: .80,
-              reps: 4
-          }],
-          movement: TYPES.BSQUAT
-      };
-      var dayTwo = {
-          sets: [{
-              weightPercentage: .60,
-              reps: 10
-          }, {
-              weightPercentage: .70,
-              reps: 8
-          }, {
-              weightPercentage: .75,
-              reps: 6
-          },{
-              weightPercentage: .80,
-              reps: 4
-          }],
-          movement: TYPES.FSQUAT
-      };
-      var dayThree = {
-          sets: [{
-              weightPercentage: .60,
-              reps: 10
-          }, {
-              weightPercentage: .65,
-              reps: 8
-          }, {
-              weightPercentage: .70,
-              reps: 6
-          },{
-              weightPercentage: .75,
-              reps: 6
-          },{
-              weightPercentage: .80,
-              reps: 6
-          }],
-          movement: TYPES.BSQUAT
-      };
-      var dayFour = {
-          sets: [{
-              weightPercentage: .60,
-              reps: 10
-          }, {
-              weightPercentage: .65,
-              reps: 8
-          }, {
-              weightPercentage: .70,
-              reps: 6
-          },{
-              weightPercentage: .75,
-              reps: 6
-          },{
-              weightPercentage: .80,
-              reps: 6
-          }],
-          movement: TYPES.FSQUAT
-      };
-      var liftingProgram = {
-          name: 'Hatch Cycle',
-          weeks: [{
-              days: [dayOne, dayTwo]
-          }, {
-              days: [dayThree, dayFour]
-          }]
-      };
-      var userLiftingProgram = {
-          program: liftingProgram,
-          startDate: new Date(),
-          user: {
-              name: 'Jim',
-              max: {
-                  'Back Squat': 200,
-                  'Front Sqaut': 100
-              }
-          }
-      };
-      var day = dayOne;
-      var set = day.sets[0];
-      var whatToLift = set.weightPercentage * userLiftingProgram.user.max[day.movement];
-  </script>
   </body>
 </html>

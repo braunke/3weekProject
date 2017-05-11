@@ -44,7 +44,7 @@ router.get('/workout/:id/:week/:day', function(req, res, next) {
                 });
                 return res.render('workout', {
                     title: 'Workout',
-                    weekIndex: req.params.week,
+                    weekIndex: parseInt(req.params.week),
                     dayIndex: parseInt(req.params.day),
                     day: day,
                     userCycle: userCycle
@@ -52,18 +52,37 @@ router.get('/workout/:id/:week/:day', function(req, res, next) {
             });
     });
 });
-router.get('/user/:id/cycles', function(req, res, next) {
-    UserCycle.find({user: req.params.id})
-        .populate('user cycle')
-        .exec(function(err, userCycles) {
+router.get('/user/:id', function(req, res, next) {
+    Lift.find({}, function(err, lifts) {
+        if (err) {
+            return next(err);
+        }
+        User.findById(req.params.id, function (err, user) {
             if (err) {
                 return next(err);
             }
-            res.render('user_cycles', {
-                title: 'User Cycles',
-                userCycles: userCycles
+            lifts.map(function (lift) {
+                user.Max.map(function (max) {
+                    if (lift._id == max.LiftType) {
+                        max.LiftType = lift.name;
+                    }
+                });
             });
+            UserCycle.find({user: req.params.id})
+                .populate('user cycle')
+                .exec(function (err, userCycles) {
+                    if (err) {
+                        return next(err);
+                    }
+                    res.render('user_cycles', {
+                        title: 'User Cycles',
+                        user: user,
+                        lifts: lifts,
+                        userCycles: userCycles
+                    });
+                });
         });
+    });
 });
 router.get('/users', function(req, res, next) {
     User.find({}, function(err, users) {
@@ -87,7 +106,7 @@ router.get('/user', function(req, res, next) {
         });
     });
 });
-router.get('/user/:id', function(req, res, next) {
+router.get('/user/:id/edit', function(req, res, next) {
     Lift.find({}, function(err, lifts) {
         if (err) {
             return next(err);

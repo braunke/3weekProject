@@ -1,24 +1,39 @@
-<h1>{{{title}}}</h1>
-<h5><a href ="/info">Back to main page</a></h5>
-<table>
+<nav>
+    <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a> &gt;
+    <a href="/users">Users</a> &gt;
+    <a href="/user/{{ userCycle.user._id }}">{{ userCycle.user.name }}</a> &gt;
+    <strong>{{ userCycle.user.name }}'s {{userCycle.cycle.name}}</strong>
+</nav>
 
+<h1>{{{title}}}</h1>
+
+<table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>Week</th>
-            <th>Day One Back Squat</th>
-            <th>Day Two Front Squat</th>
+            <th>
+                <span>Week</span>
+            </th>
+            <th>
+                <span>Day One Back Squat</span>
+            </th>
+            <th>
+                <span>Day Two Front Squat</span>
+            </th>
         </tr>
     </thead>
     <tbody>
         {{#each userCycle.cycle.weeks as |week wkIndex|}}
             <tr>
-                <td>Week of {{ weekDate ../userCycle.startDate wkIndex }}</td>
+                <td>
+                    <span>Week of {{ weekDate ../userCycle.startDate wkIndex }}</span>
+                </td>
                 {{#each week.days as |day dayIndex|}}
-                    <td><br><a href="/workout/{{../../userCycle._id}}/{{wkIndex}}/{{dayIndex}}">
-                        {{#each day.sets as |set|}}
-                            1 X  {{set.reps}} at {{ multiply set.weightPercentage 100 }}%<br>
-                        {{/each}}
-                    </a>
+                    <td>
+                        <a href="/workout/{{../../userCycle._id}}/{{wkIndex}}/{{dayIndex}}">
+                            {{#each day.sets as |set|}}
+                                1 X  {{set.reps}} at {{ multiply set.weightPercentage 100 }}%<br>
+                            {{/each}}
+                        </a>
                     </td>
                 {{/each}}
             </tr>
@@ -27,11 +42,21 @@
 </table>
 
 <style>
-    table {
-        width: 100%;
-    }
-    td, th {
-        width: 33%;
+    .table tbody tr td, .table thead tr th {
+        flex: 1px 1 1;
         text-align: center;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .table tbody tr td a {
+        flex: 1px 1 1;
+    }
+    .table tbody tr td > *, .table thead tr th > * {
+        padding: 8px;
+    }
+    .table tbody tr, .table thead tr {
+        display: flex;
     }
 </style>

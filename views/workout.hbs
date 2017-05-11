@@ -1,11 +1,24 @@
-<h1>Week of {{ weekDate userCycle.startDate weekIndex }} - Day {{ add dayIndex 1 }}</h1>
-<h2>Workout</h2>
-{{#each day.sets as |set|}}
-    1 X  {{set.reps}} at  {{ multiply set.weightPercentage 100 }}%
-    <span onclick="selectedWeight({{ liftWeight ../userCycle.user ../day.movement set.weightPercentage }})">{{ liftWeight ../userCycle.user ../day.movement set.weightPercentage }}</span><br>
-{{/each}}
+<nav>
+    <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a> &gt;
+    <a href="/users">Users</a> &gt;
+    <a href="/user/{{ userCycle.user._id }}">{{ userCycle.user.name }}</a> &gt;
+    <a href="/user/cycle/{{ userCycle._id }}">{{ userCycle.user.name }}'s {{userCycle.cycle.name}}</a> &gt;
+    <strong>Week {{ add weekIndex 1}}, Day {{ add dayIndex 1 }}</strong>
+</nav>
 
-<a href="#">Back</a>
+<h1>Week of {{ weekDate userCycle.startDate weekIndex }} Day {{ add dayIndex 1 }}</h1>
+
+<div class="panel panel-default panel-nav">
+    <div class="panel-heading">Workout</div>
+    <div class="list-group">
+        {{#each day.sets as |set|}}
+            <button type="button" class="list-group-item" onclick="setActive(this);selectedWeight({{ liftWeight ../userCycle.user ../day.movement set.weightPercentage }})">
+                1 X  {{set.reps}} at  {{ multiply set.weightPercentage 100 }}% {{ liftWeight ../userCycle.user ../day.movement set.weightPercentage }}
+            </button>
+        {{/each}}
+    </div>
+</div>
+
 <div id="canvasWrapper">
     <p><em>Showing one end of bar</em></p>
     <!--creates canvas for graphic of plates-->
@@ -15,7 +28,11 @@
 </div>
 
 <script>
-    function selectedWeight(weight){
+    function setActive(element) {
+        $('.list-group-item').removeClass('active');
+        $(element).addClass('active');
+    }
+    function selectedWeight(weight) {
         calculate(weight, 33);
     }
 </script>
@@ -25,6 +42,7 @@
 
 {{#if  day.sets.length}}
     <script>
-        selectedWeight({{liftWeight userCycle.user day.movement day.sets.[0].weightPercentage}})
+        setActive($('.list-group-item').first());
+        selectedWeight({{liftWeight userCycle.user day.movement day.sets.[0].weightPercentage}});
     </script>
 {{/if}}

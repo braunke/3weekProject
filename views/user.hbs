@@ -1,15 +1,45 @@
-<h1>Enter Your Info</h1>
-<form onsubmit="submitUser(event)">
-    <input type="hidden" name="_id" value="{{user._id}}">
-    Name <input type="text" name="name" value="{{user.name}}"required><br>
-    <div>
-        <p>One Rep Max:</p>
-        {{#each lifts as |lift| }}
-            {{ lift.name }} <input type="text" name="{{ maxInputName lift }}" value="{{ liftWeight ../user lift.name 1 }}"><br>
-        {{/each}}
-    </div>
-    <button>Submit</button>
-</form>
+
+<nav>
+    <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a> &gt;
+    {{#if user }}
+        <a href="/users">Users</a> &gt;
+        <a href="/user/{{user._id}}">{{ user.name }}</a> &gt;
+        <strong>Edit</strong>
+    {{else}}
+        <strong>Add User</strong>
+    {{/if}}
+</nav>
+
+<section class="user-form">
+    <h1 class="text-primary">
+        {{#if user }}
+            Edit {{ user.name }}
+        {{else}}
+            Enter Your Info
+        {{/if}}
+    </h1>
+    <hr class="hr-primary">
+    <form onsubmit="submitUser(event)">
+        <input type="hidden" name="_id" value="{{user._id}}">
+        <div class="form-group">
+            <label for="nameInput">Name</label>
+            <input type="text" class="form-control" name="name" value="{{user.name}}" placeholder="Name" required>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Max Lifts</div>
+            <div class="panel-body">
+                {{#each lifts as |lift| }}
+                    <div class="form-group">
+                        <label for="{{ maxInputName lift }}Input">{{ lift.name }}</label>
+                        <input id="{{ maxInputName lift }}Input" type="text" class="form-control" name="{{ maxInputName lift }}"
+                               value="{{ liftWeight ../user lift.name 1 }}" placeholder="Max {{ lift.name }}" required>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+        <button class="btn btn-primary">Submit</button>
+    </form>
+</section>
 <script>
     function submitUser(event) {
         event.preventDefault();

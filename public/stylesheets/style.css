@@ -6,3 +6,21 @@ body {
 a {
   color: #00B7FF;
 }
+
+.panel-nav {
+  max-width: 300px;
+}
+
+.user-form > * {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hr-primary {
+  border-top-color: #337ab7;
+}
+
+.user-form hr {
+  max-width: 600px;
+}
