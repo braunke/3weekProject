@@ -19,53 +19,137 @@
         {{/if}}
     </h1>
     <hr class="hr-primary">
-    <form onsubmit="submitUser(event)">
+    <form onsubmit="submitUser(event)" novalidate>
         <input type="hidden" name="_id" value="{{user._id}}">
+        <div id="nameFormGroup" class="form-group">
+            <label for="nameInput" class="control-label">Name</label>
+            <input id="nameInput" type="text" class="form-control" name="name" value="{{user.name}}" placeholder="Name" required>
+            <p class="help-block required-message">Name is required</p>
+            <p class="help-block pattern-message">Name is limited to letters, commas, and spaces.</p>
+        </div>
         <div class="form-group">
-            <label for="nameInput">Name</label>
-            <input type="text" class="form-control" name="name" value="{{user.name}}" placeholder="Name" required>
+            <label for="barInput" class="control-label">Bar</label>
+            <select id="barInput" type="text" class="form-control" name="bar" value="{{user.bar}}" placeholdfer="Bar" required>
+                <option value="33">Standard Women's (33#)</option>
+                <option value="45">Standard Men's (45#)</option>
+            </select>
         </div>
         <div class="panel panel-primary">
             <div class="panel-heading">Max Lifts</div>
             <div class="panel-body">
                 {{#each lifts as |lift| }}
-                    <div class="form-group">
-                        <label for="{{ maxInputName lift }}Input">{{ lift.name }}</label>
+                    <div id="{{ maxInputName lift }}FormGroup" class="form-group">
+                        <label for="{{ maxInputName lift }}Input" class="control-label">{{ lift.name }}</label>
                         <input id="{{ maxInputName lift }}Input" type="text" class="form-control" name="{{ maxInputName lift }}"
                                value="{{ liftWeight ../user lift.name 1 }}" placeholder="Max {{ lift.name }}" required>
+                        <p class="help-block required-message">{{ lift.name }} is required</p>
+                        <p class="help-block numeric-message">{{ lift.name }} must be a number</p>
+                        <p class="help-block minimum-message">{{ lift.name }} must be greater than or equal to the bar weight</p>
+                        <p class="help-block maximum-message">{{ lift.name }} must be less than or equal to 500#</p>
                     </div>
                 {{/each}}
             </div>
         </div>
         <button class="btn btn-primary">Submit</button>
+        <div id="serverSuccessMessage" class="alert alert-info"><strong>Yahoo!</strong> Your information is saved and looks pretty excellent, btw...</div>
+        <div id="serverErrorMessage" class="alert alert-danger"><strong>Dangit!</strong> There was an error saving your information</div>
     </form>
 </section>
 <script>
+    $('#serverSuccessMessage').hide();
+    $('#serverErrorMessage').hide();
     function submitUser(event) {
         event.preventDefault();
         clearErrorStates();
         var user = {
+            _id: getId(),
             name: getName(),
+            bar: getBar(),
             Max: getMax()
         };
-        $.ajax({
-            method: 'PUT',
-            data: {user: JSON.stringify(user)},
-            url: '/user'
-        })
-        .done(function(result){
-            console.log(result);
-        })
-        .fail(function(err){
-            console.log('done but bad news bears');
-        })
+        if (validate(user)) {
+            user.Max.map(function(max) {
+                max.Weight = parseFloat(max.Weight);
+            });
+            $.ajax({
+                method: 'PUT',
+                data: {user: JSON.stringify(user)},
+                url: '/user'
+            })
+            .done(function(result){
+                $('#serverSuccessMessage').show();
+            })
+            .fail(function(err){
+                $('#serverErrorMessage').show();
+            })
+        }
         return false;
     }
+    function setErrorState(inputName, errorName) {
+        $('#' + inputName + 'FormGroup').addClass('has-error');
+        $('#' + inputName + 'FormGroup .' + errorName + '-message').addClass('active');
+    }
+    function validate(user) {
+        var isValid = true;
+        if (!isPresent(user.name)) {
+            setErrorState('name', 'required');
+            isValid = false;
+        } else if (!validName(user.name)) {
+            setErrorState('name', 'pattern');
+            isValid = false;
+        }
+        user.Max.map(function(max) {
+            var inputName = maxInputName(max);
+            if (!isPresent(max.Weight)) {
+                setErrorState(inputName, 'required');
+                isValid = false;
+            } else if (!isNumeric(max.Weight)) {
+                setErrorState(inputName, 'numeric');
+                isValid = false;
+            } else if (!minimumLift(max.Weight)) {
+                setErrorState(inputName, 'minimum');
+                isValid = false;
+            } else if (!maximumLift(max.Weight)) {
+                setErrorState(inputName, 'maximum');
+                isValid = false;
+            }
+        });
+        return isValid;
+    }
+    function maxInputName(max) {
+        return 'max_' + max.LiftType.split(' ').join('_');
+    }
+    function isPresent(val) {
+        return val !== '';
+    }
+    function isNumeric(val) {
+        var numericVal = parseFloat(val);
+        return val == numericVal;
+    }
+    function validName(val) {
+        return /^[A-Za-z, -]+$/.test(val);
+    }
+    function minimumLift(val) {
+        var bar = getBar();
+        return parseFloat(val) >= bar;
+    }
+    function maximumLift(val) {
+        return parseFloat(val) <= 500;
+    }
     function clearErrorStates() {
-
+        $('.form-group').removeClass('has-error');
+        $('.help-block').removeClass('active');
+        $('#serverSuccessMessage').hide();
+        $('#serverErrorMessage').hide();
+    }
+    function getId() {
+        return $('input[name="_id"]').val();
     }
     function getName() {
         return $('input[name="name"]').val();
+    }
+    function getBar() {
+        return $('select[name="bar"]').val();
     }
     function getMax() {
         var maxInputs = $('input[name^="max"]');
@@ -74,7 +158,7 @@
             element = $(element);
             Max.push({
                 LiftType: fromMaxInputName(element.attr('name')),
-                Weight: parseInt(element.val())
+                Weight: element.val()
             });
         });
         return Max;

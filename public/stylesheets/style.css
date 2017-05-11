@@ -24,3 +24,16 @@ a {
 .user-form hr {
   max-width: 600px;
 }
+
+.btn-cycle {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.btn-new {
+  opacity: .85;
+}
+
+.help-block:not(.active) {
+  display: none;
+}

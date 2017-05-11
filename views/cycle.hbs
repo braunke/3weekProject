@@ -13,12 +13,11 @@
             <th>
                 <span>Week</span>
             </th>
-            <th>
-                <span>Day One Back Squat</span>
-            </th>
-            <th>
-                <span>Day Two Front Squat</span>
-            </th>
+            {{#each userCycle.cycle.weeks.[0].days as |day dayIndex|}}
+                <th>
+                    <span>Day {{ add dayIndex 1 }} {{day.movement}}</span>
+                </th>
+            {{/each}}
         </tr>
     </thead>
     <tbody>

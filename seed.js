@@ -459,6 +459,7 @@ function seed() {
             };
             user =  {
                 name: 'Jim',
+                bar: 33,
                 Max: [{
                     LiftType: TYPES.BSQUAT,
                     Weight: 200

@@ -49,6 +49,9 @@ app.engine('.hbs', hbs({
         dateFormat: function (startDate) {
             return moment(startDate).format('MMMM Do, YYYY');
         },
+        now: function () {
+            return moment().format('YYYY-MM-DD');
+        },
         maxInputName: function (lift) {
             return 'max_' + lift.name.split(' ').join('_');
         }

@@ -10,6 +10,10 @@
     <p class="text-right">
         <a href="/user/{{user._id}}/edit"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
     </p>
+    <p class="clearfix">
+        <strong class="col-xs-6">Bar</strong>
+        <span class="col-xs-6">{{ user.bar }}</span>
+    </p>
     <div class="panel panel-primary">
         <div class="panel-heading">Max Lifts</div>
         <div class="panel-body">
@@ -24,14 +28,113 @@
     <div class="panel panel-primary">
         <div class="panel-heading">Cycles</div>
         <div class="panel-body">
-            {{#each userCycles as |userCycle|}}
-                <p class="clearfix">
-                    <a href="/user/cycle/{{userCycle._id}}">
-                        <span class="col-sm-6">{{userCycle.cycle.name}}</span>
-                        <span class="col-sm-6">{{ dateFormat userCycle.startDate}}</span>
+            <div id="userCycleList">
+                {{#each userCycles as |userCycle|}}
+                    <a class="btn btn-default btn-cycle" href="/user/cycle/{{userCycle._id}}">
+                        <span class="col-sm-6">Cycle: {{userCycle.cycle.name}}</span>
+                        <span class="col-sm-6">StartDate: {{ dateFormat userCycle.startDate}}</span>
                     </a>
-                </p>
-            {{/each}}
+                {{/each}}
+            </div>
+            <button id="formToggle" onclick="toggleForm()" class="btn btn-warning btn-cycle"><span class="glyphicon glyphicon-plus"></span> Add New Cycle</button>
+            <form class="well" onsubmit="addUserCycle(event)" novalidate>
+                <input type="hidden" name="user" value="{{user._id}}">
+                <div class="form-group">
+                    <label for="cycleInput" class="control-label">Cycle</label>
+                    <select id="cycleInput" class="form-control" name="cycle" placeholder="Cycle" required>
+                        {{#each cycles as |cycle|}}
+                            <option value="{{ cycle._id }}">{{ cycle.name }}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div id="startDateFormGroup" class="form-group">
+                    <label for="startDateInput" class="control-label">Start Date</label>
+                    <input id="startDateInput" type="date" class="form-control" name="startDate" value="{{ now }}"
+                           placeholder="Start Date" required>
+                    <p class="help-block date-message">Please enter a valid date</p>
+                </div>
+                <div class="btn-group btn-cycle" role="group">
+                    <button onclick="toggleForm()" type="button" class="btn btn-default col-xs-6">Cancel</button>
+                    <button class="btn btn-primary col-xs-6">Submit</button>
+                </div>
+                <div id="serverErrorMessage" class="alert alert-danger"><strong>Dangit!</strong> There was an error adding your new cycle</div>
+            </form>
         </div>
     </div>
 </section>
+
+<script>
+    function toggleForm() {
+        $('#serverErrorMessage').hide();
+        $('form, #formToggle').toggle();
+    }
+    $('form, #serverErrorMessage').toggle();
+    function addUserCycle(event) {
+        event.preventDefault();
+        clearErrorStates();
+        var userCycle = {
+            user: getUser(),
+            cycle: getCycle(),
+            startDate: getStartDate()
+        };
+        if (validate(userCycle)) {
+            $.ajax({
+                method: 'PUT',
+                data: {userCycle: JSON.stringify(userCycle)},
+                url: '/userCycle'
+            })
+            .done(function(result){
+                updateCycleList(userCycle, result._id);
+                toggleForm();
+            })
+            .fail(function(err){
+                $('#serverErrorMessage').toggle();
+            });
+        }
+        return false;
+    }
+    function updateCycleList(userCycle, id) {
+        var newUserCycleListItem = $(
+            '<a class="btn btn-success btn-new btn-cycle" href="/user/cycle/' + id + '">' +
+            '    <span class="col-sm-6">Cycle: ' + getCycleName(userCycle.cycle) + '</span>' +
+            '    <span class="col-sm-6">StartDate: ' + dateFormat(userCycle.startDate) + '</span>' +
+            '</a>'
+        );
+        $('#userCycleList').append(newUserCycleListItem);
+    }
+    function getCycleName(id) {
+        return $('option:selected').text();
+    }
+    function dateFormat(date) {
+        return moment(date).format('MMMM Do, YYYY');
+    }
+    function clearErrorStates() {
+        $('.form-group').removeClass('has-error');
+        $('.help-block').removeClass('active');
+        $('#serverErrorMessage').hide();
+    }
+    function setErrorState(inputName, errorName) {
+        $('#' + inputName + 'FormGroup').addClass('has-error');
+        $('#' + inputName + 'FormGroup .' + errorName + '-message').addClass('active');
+    }
+    function validate(userCycle) {
+        var isValid = true;
+        if (!isDate(userCycle.startDate)) {
+            setErrorState('startDate', 'date');
+            isValid = false;
+        }
+        return isValid;
+    }
+    function isDate(val) {
+        return moment(val, 'YYYY-MM-DD', true).isValid();
+    }
+    function getUser() {
+        return $('input[name="user"]').val();
+    }
+    function getCycle() {
+        return $('select[name="cycle"]').val();
+    }
+    function getStartDate() {
+        return $('input[name="startDate"]').val();
+    }
+</script>

@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
     name: String,
+    bar: Number,
     Max: [{
         LiftType: String,
         Weight: Number
