@@ -1,3 +1,4 @@
+//defines the structure of a user
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

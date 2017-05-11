@@ -1,3 +1,4 @@
+<!--specific workout page-->
 <nav>
     <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a> &gt;
     <a href="/users">Users</a> &gt;
@@ -5,14 +6,17 @@
     <a href="/user/cycle/{{ userCycle._id }}">{{ userCycle.user.name }}'s {{userCycle.cycle.name}}</a> &gt;
     <strong>Week {{ add weekIndex 1}}, Day {{ add dayIndex 1 }}</strong>
 </nav>
-
+<!--grabs the week and day of the cycle-->
 <h1>Week of {{ weekDate userCycle.startDate weekIndex }} Day {{ add dayIndex 1 }}</h1>
-
+<!--style stuff-->
 <div class="panel panel-default panel-nav">
     <div class="panel-heading">Workout</div>
     <div class="list-group">
+        <!--displays each set and its reps and the weight and what percent that is
+        when selected will call the selectedWeight function to display barbell-->
         {{#each day.sets as |set|}}
             <button type="button" class="list-group-item" onclick="setActive(this);selectedWeight({{ liftWeight ../userCycle.user ../day.movement set.weightPercentage }})">
+                //stuff to make it look cool
                 <span class="value">1</span>
                 <span class="unit">set</span>
                 <span class="article">of</span>
@@ -44,7 +48,7 @@
         calculate(weight, {{ userCycle.user.bar }});
     }
 </script>
-
+<!--stuff to show proper weight on bar-->
 <script src="/javascripts/weightConfigs.js"></script>
 <script src="/javascripts/weights.js"></script>
 

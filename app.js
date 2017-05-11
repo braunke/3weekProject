@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -11,11 +12,13 @@ mongoose.Promise = require('bluebird');
 var hbs = require('express-handlebars');
 var index = require('./routes/index');
 var users = require('./routes/users');
+//used a seed to populate database with cycle
 var seed = require('./seed');
 var helpers = require('handlebars-helpers')();
 
 var app = express();
 var mongo_pw = process.env.MONGO_PW;
+//environmental variable set to mlab
 var url = process.env.MONGO_URL;
 //var url = 'mongodb://userAdmin:' + mongo_pw + '@localhost:27017/weight?authSource=admin';
 mongoose.connect(url);

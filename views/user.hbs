@@ -1,4 +1,5 @@
-
+<!--depending on if you are editing or adding a new user some text will change, otherwise same page
+links to other pages-->
 <nav>
     <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a> &gt;
     {{#if user }}
@@ -24,12 +25,14 @@
         <div id="nameFormGroup" class="form-group">
             <label for="nameInput" class="control-label">Name</label>
             <input id="nameInput" type="text" class="form-control" name="name" value="{{user.name}}" placeholder="Name" required>
+            <!--error messages that appear if entered info in incorrect-->
             <p class="help-block required-message">Name is required</p>
-            <p class="help-block pattern-message">Name is limited to letters, commas, and spaces.</p>
+            <p class="help-block pattern-message">Name is limited to letters, commas, spaces and hyphens.</p>
         </div>
         <div class="form-group">
             <label for="barInput" class="control-label">Bar</label>
             <select id="barInput" type="text" class="form-control" name="bar" placeholdfer="Bar" required>
+                <!--drop down for bar type-->
                 <option value="33" {{#eq user.bar 33}}selected="selected"{{/eq}}>Standard Women's (33#)</option>
                 <option value="45" {{#eq user.bar 45}}selected="selected"{{/eq}}>Standard Men's (45#)</option>
             </select>
@@ -37,15 +40,17 @@
         <div class="panel panel-primary">
             <div class="panel-heading">Max Lifts</div>
             <div class="panel-body">
+                <!--displays each lift and adds input spot-->
                 {{#each lifts as |lift| }}
                     <div id="{{ maxInputName lift }}FormGroup" class="form-group">
                         <label for="{{ maxInputName lift }}Input" class="control-label">{{ lift.name }}</label>
                         <input id="{{ maxInputName lift }}Input" type="text" class="form-control" name="{{ maxInputName lift }}"
                                value="{{ liftWeight ../user lift.name 1 }}" placeholder="Max {{ lift.name }}" required>
+                        <!--messages for data validation-->
                         <p class="help-block required-message">{{ lift.name }} is required</p>
                         <p class="help-block numeric-message">{{ lift.name }} must be a number</p>
                         <p class="help-block minimum-message">{{ lift.name }} must be greater than or equal to the bar weight</p>
-                        <p class="help-block maximum-message">{{ lift.name }} must be less than or equal to 500#</p>
+                        <p class="help-block maximum-message">{{ lift.name }} must be less than or equal to 500#, bro</p>
                     </div>
                 {{/each}}
             </div>
@@ -55,5 +60,5 @@
         <div id="serverErrorMessage" class="alert alert-danger"><strong>Dangit!</strong> There was an error saving your information</div>
     </form>
 </section>
-
+<!--link to javascript used-->
 <script src="/javascripts/userForm.js"></script>

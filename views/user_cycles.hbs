@@ -1,3 +1,4 @@
+<!--main page for each user-->
 <nav>
     <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a> &gt;
     <a href="/users">Users</a> &gt;
@@ -8,13 +9,16 @@
     <h1 class="text-primary">{{ user.name }}</h1>
     <hr class="hr-primary">
     <p class="text-right">
+        <!--link to edit info-->
         <a href="/user/{{user._id}}/edit"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
     </p>
     <p class="clearfix">
+        <!--shows what bar they are currently using-->
         <strong class="col-xs-6">Bar</strong>
         <span class="col-xs-6">{{ user.bar }}</span>
     </p>
     <div class="panel panel-primary">
+        <!--shows users max lifts-->
         <div class="panel-heading">Max Lifts</div>
         <div class="panel-body">
             {{#each lifts as |lift| }}
@@ -29,6 +33,7 @@
         <div class="panel-heading">Cycles</div>
         <div class="panel-body">
             <div id="userCycleList">
+                <!--shows all of a users cycles --if clicked on will go to that cycle-->
                 {{#each userCycles as |userCycle|}}
                     <a class="btn btn-default btn-cycle" href="/user/cycle/{{userCycle._id}}">
                         <span class="col-sm-6">Cycle: {{userCycle.cycle.name}}</span>
@@ -36,6 +41,7 @@
                     </a>
                 {{/each}}
             </div>
+            <!--can add new cycle, will toggle a form to add-->
             <button id="formToggle" onclick="toggleForm()" class="btn btn-warning btn-cycle"><span class="glyphicon glyphicon-plus"></span> Add New Cycle</button>
             <form class="well" onsubmit="addUserCycle(event)" novalidate>
                 <input type="hidden" name="user" value="{{user._id}}">
@@ -51,6 +57,7 @@
                     <label for="startDateInput" class="control-label">Start Date</label>
                     <input id="startDateInput" type="date" class="form-control" name="startDate" value="{{ now }}"
                            placeholder="Start Date" required>
+                    <!--validating message shown-->
                     <p class="help-block date-message">Please enter a valid date</p>
                 </div>
                 <div class="btn-group btn-cycle" role="group">
@@ -62,5 +69,5 @@
         </div>
     </div>
 </section>
-
+<!--link to javascript used-->
 <script src="/javascripts/addUserCycleForm.js"></script>

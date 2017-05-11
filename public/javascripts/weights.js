@@ -8,6 +8,7 @@ function getPlateWeightNeeded(targetWeight, barWeight) {
 //checks which plate choices were picked and puts them into a list
 function getAvailablePlates() {
     /*
+    May re include this for later functionality
     var availableWeightsInputs = document.querySelectorAll('input[name="availablePlates"]:checked');
     var availableWeights = [];
     for (var i = 0; i < availableWeightsInputs.length; i++) {

@@ -1,9 +1,9 @@
-
+//populates databse with cycle and a user so you dont have to add a user to see if its all working
 var User = require('./models/user');
 var Cycle = require('./models/cycle');
 var UserCycle = require('./models/userCycle');
 var Lift = require('./models/lift');
-
+//Hatch cycle info is from programming my gym had
 function seed() {
     //creating initial data in database info found in web dev book
     Cycle.find(function (err, cycle) {

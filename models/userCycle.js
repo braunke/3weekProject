@@ -1,3 +1,4 @@
+//linking table to associate a user with a cycle with a start date
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

@@ -1,3 +1,4 @@
+//defines the structure for a cycle
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
