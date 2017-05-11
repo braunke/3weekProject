@@ -13,7 +13,15 @@
     <div class="list-group">
         {{#each day.sets as |set|}}
             <button type="button" class="list-group-item" onclick="setActive(this);selectedWeight({{ liftWeight ../userCycle.user ../day.movement set.weightPercentage }})">
-                1 X  {{set.reps}} at  {{ multiply set.weightPercentage 100 }}% {{ liftWeight ../userCycle.user ../day.movement set.weightPercentage }}
+                <span class="value">1</span>
+                <span class="unit">set</span>
+                <span class="article">of</span>
+                <span class="value">{{set.reps}}</span>
+                <span class="unit">reps</span>
+                <span class="article">at</span>
+                <span class="value">{{ liftWeight ../userCycle.user ../day.movement set.weightPercentage }}</span>
+                <span class="unit">lbs</span>
+                <span class="detail">({{ multiply set.weightPercentage 100 }}%)</span>
             </button>
         {{/each}}
     </div>

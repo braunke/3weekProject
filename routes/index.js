@@ -154,6 +154,11 @@ router.get('/', function(req, res, next) {
         title: 'Home'
     });
 });
+router.get('/about', function(req, res, next) {
+    res.render('about', {
+        title: 'About'
+    });
+});
 router.put('/user', function(req, res, next) {
     var user = JSON.parse(req.body.user);
     if (user._id) {
