@@ -29,9 +29,9 @@
         </div>
         <div class="form-group">
             <label for="barInput" class="control-label">Bar</label>
-            <select id="barInput" type="text" class="form-control" name="bar" value="{{user.bar}}" placeholdfer="Bar" required>
-                <option value="33">Standard Women's (33#)</option>
-                <option value="45">Standard Men's (45#)</option>
+            <select id="barInput" type="text" class="form-control" name="bar" placeholdfer="Bar" required>
+                <option value="33" {{#eq user.bar 33}}selected="selected"{{/eq}}>Standard Women's (33#)</option>
+                <option value="45" {{#eq user.bar 45}}selected="selected"{{/eq}}>Standard Men's (45#)</option>
             </select>
         </div>
         <div class="panel panel-primary">
