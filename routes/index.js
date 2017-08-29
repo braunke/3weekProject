@@ -7,7 +7,7 @@ var Lift = require('../models/lift.js');
 //library to do date operations and format dates
 var moment = require('moment');
 
-/* GET page that shows a users cycle . */
+/ * GET page that shows a users cycle . */
 router.get('/user/cycle/:id', function(req, res, next) {
     Lift.find({}, function(err, lifts) {
         if (err) {
@@ -143,6 +143,11 @@ router.get('/user', function(req, res, next) {
             lifts: lifts
         });
     });
+});
+router.get('/graph', function(req, res, next) {
+    res.render('graph', {
+        title: 'Graph'
+    })
 });
 //editing a users info
 router.get('/user/:id/edit', function(req, res, next) {
