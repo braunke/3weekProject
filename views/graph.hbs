@@ -29,11 +29,11 @@
     //color of the bars
     var z = d3.scaleOrdinal()
             .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-    var zero = {MaxLift:"1repMax", backSquat: 284, benchPress: 133, frontSquat: 243, snatch: 128, strictPress: 54}
-    var one = {MaxLift:"3repMax", backSquat: 233, benchPress: 110, frontSquat: 213, snatch: 123, strictPress: 45}
-    var two = {MaxLift:"5repMax", backSquat: 200, benchPress: 95, frontSquat: 187, snatch: 100, strictPress: 33}
+    var zero = {MaxLift:"BackSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
+    var one = {MaxLift:"FrontSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
+    var two = {MaxLift:"StrictPress", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
     var rowObjects = [zero, one, two];
-    rowObjects.columns=["MaxLift", "backSquat", "benchPress", "frontSquat", "snatch", "strictPress" ]
+    rowObjects.columns=["MaxLift", "OneRepMax", "TwoRepMax", "ThreeRepMax", "FourRepMax", "FiveRepMax" ];
     //d3.csv("data/data.csv", function(rowObject, i, liftNames) {
 
      //   for (var columnIndex = 1; columnIndex < liftNames.length; ++columnIndex) {
@@ -61,7 +61,9 @@
             });
         })]).nice();
 
-        g.append("g")
+    var yTextPadding = 20;
+
+    var bars = g.append("g")
                 .selectAll("g")
                 .data(rowObjects)
                 .enter().append("g")
@@ -77,8 +79,9 @@
                             value: d[key]
                         };
                     });
-                })
-                .enter().append("rect")
+                });
+    // creates bar rectangle
+    bars.enter().append("rect")
                 //calling to configure spacing within bar group
                 .attr("x", function(d) {
                     return x1(d.key);
@@ -90,7 +93,23 @@
                 .attr("width", x1.bandwidth())
                 .attr("height", function(d) { return height - y(d.value); })
                 .attr("fill", function(d) { return z(d.key); });
+    // creates text on bar
+    //used this site for idea on how to add text http://www.cagrimmett.com/til/2016/04/26/responsive-d3-bar-chart.html
+    bars.enter().append("text")
+                .attr("x", function(d) {
+                    return x1 (d.key);
+                }) // xScale(d.food); })
+                .attr("y", function(d) {
+                    return y(d.value);
+                }) // yScale(d.quantity); })
+                .attr("dy", ".75em")
 
+                .attr("width", x1.bandwidth())
+                .attr("height", function(d) { return height - y(d.value); })
+
+                .text(function(d) {
+                return d.value;
+                });
         g.append("g")
                 .attr("class", "axis")
                 .attr("transform", "translate(0," + height + ")")
