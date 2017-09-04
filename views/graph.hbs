@@ -29,10 +29,35 @@
     //color of the bars
     var z = d3.scaleOrdinal()
             .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-    var zero = {MaxLift:"BackSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
-    var one = {MaxLift:"FrontSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
-    var two = {MaxLift:"StrictPress", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
-    var rowObjects = [zero, one, two];
+
+    var lifts = [{
+        name: 'Back Squat',
+        max: 283
+    }, {
+        name: 'Front Squat',
+        max: 243
+    }, {
+        name: 'Strict Press',
+        max: 103
+    }];
+    var rowObjects = [];
+    for (i = 0; i < lifts.length; i++) {
+        rowObjects.push({MaxLift: lifts[i].name ,
+            OneRepMax: lifts[i].max,
+            TwoRepMax: xRepMax(lifts[i].max, 2),
+            ThreeRepMax: xRepMax(lifts[i].max, 3),
+            FourRepMax: xRepMax(lifts[i].max, 4),
+            FiveRepMax: xRepMax(lifts[i].max, 5),})
+    }
+    // TODO: create the 'rowObjects' object programmatically from the lifts object
+    function xRepMax(oneRepMax, reps) {
+        return oneRepMax * (20 - reps) / 20;
+    }
+
+ //   var zero = {MaxLift:"BackSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
+ ////   var one = {MaxLift:"FrontSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
+  //  var two = {MaxLift:"StrictPress", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
+//    var rowObjects = [zero, one, two];
     rowObjects.columns=["MaxLift", "OneRepMax", "TwoRepMax", "ThreeRepMax", "FourRepMax", "FiveRepMax" ];
     //d3.csv("data/data.csv", function(rowObject, i, liftNames) {
 

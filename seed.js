@@ -14,6 +14,7 @@ function seed() {
             var TYPES = {
                 FSQUAT: frontSquatId,
                 BSQUAT: backSquatId
+
             };
             var dayOne = {
                 sets: [{
