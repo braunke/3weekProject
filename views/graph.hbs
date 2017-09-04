@@ -29,16 +29,22 @@
     //color of the bars
     var z = d3.scaleOrdinal()
             .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+    var zero = {MaxLift:"1repMax", backSquat: 284, benchPress: 133, frontSquat: 243, snatch: 128, strictPress: 54}
+    var one = {MaxLift:"3repMax", backSquat: 233, benchPress: 110, frontSquat: 213, snatch: 123, strictPress: 45}
+    var two = {MaxLift:"5repMax", backSquat: 200, benchPress: 95, frontSquat: 187, snatch: 100, strictPress: 33}
+    var rowObjects = [zero, one, two];
+    rowObjects.columns=["MaxLift", "backSquat", "benchPress", "frontSquat", "snatch", "strictPress" ]
+    //d3.csv("data/data.csv", function(rowObject, i, liftNames) {
 
-    d3.csv("data/data.csv", function(rowObject, i, liftNames) {
-        for (var columnIndex = 1; columnIndex < liftNames.length; ++columnIndex) {
+     //   for (var columnIndex = 1; columnIndex < liftNames.length; ++columnIndex) {
             //the '+' turns the data into numbers
-            var liftName = liftNames[columnIndex]
-            rowObject[liftName] = +rowObject[liftName];
-        }
-        return rowObject;
-    }, function(error, rowObjects) {
-        if (error) throw error;
+   //         var liftName = liftNames[columnIndex]
+  //          rowObject[liftName] = +rowObject[liftName];
+  //      }
+ //       return rowObject;
+  //  }, function(error, rowObjects) {
+        console.log(rowObjects)
+      //  if (error) throw error;
         // grabs the keys to access numeric data
         var keys = rowObjects.columns.slice(1);
 
@@ -123,6 +129,7 @@
                 .attr("y", 9.5)
                 .attr("dy", "0.32em")
                 .text(function(d) { return d; });
-    });
+   // });
+
 
 </script>
