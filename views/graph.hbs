@@ -1,4 +1,4 @@
-
+<!--used this site for graph idea https://bl.ocks.org/mbostock/3887051-->
 <style>
 
     .axis .domain {
@@ -44,20 +44,25 @@
     for (i = 0; i < lifts.length; i++) {
         rowObjects.push({MaxLift: lifts[i].name ,
             OneRepMax: lifts[i].max,
-            ThreeRepMax: xRepMax(lifts[i].max, 3),
-            FiveRepMax: xRepMax(lifts[i].max, 5),
-            TenRepMax: xRepMax(lifts[i].max, 10)})
+            ThreeRepMax: xRepMax(lifts[i].max, .906),
+            FiveRepMax: xRepMax(lifts[i].max, .856),
+            TenRepMax: xRepMax(lifts[i].max, .744)})
     }
-    // TODO: create the 'rowObjects' object programmatically from the lifts object
-    function xRepMax(oneRepMax, reps) {
-        return oneRepMax * (20 - reps) / 20;
+    //http://www.timinvermont.com/fitness/orm.htm calculations
+    // calculates xRep maxes from 1rep max
+    function xRepMax(oneRepMax, coefficient) {
+        xRep = oneRepMax * coefficient;
+        return Math.round(xRep);
     }
-
+    //calculates oneRepMa from xrepmax
+    function oneRepMax (xRepMax, reps){
+        return xRepMax/(1.0278-(.0278*reps));
+    }
  //   var zero = {MaxLift:"BackSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
  ////   var one = {MaxLift:"FrontSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
   //  var two = {MaxLift:"StrictPress", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
 //    var rowObjects = [zero, one, two];
-    rowObjects.columns=["MaxLift", "OneRepMax", "TwoRepMax", "ThreeRepMax", "FourRepMax", "FiveRepMax" ];
+    rowObjects.columns=["MaxLift", "OneRepMax", "ThreeRepMax", "FiveRepMax", "TenRepMax" ];
     //d3.csv("data/data.csv", function(rowObject, i, liftNames) {
 
      //   for (var columnIndex = 1; columnIndex < liftNames.length; ++columnIndex) {
