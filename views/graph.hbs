@@ -44,10 +44,9 @@
     for (i = 0; i < lifts.length; i++) {
         rowObjects.push({MaxLift: lifts[i].name ,
             OneRepMax: lifts[i].max,
-            TwoRepMax: xRepMax(lifts[i].max, 2),
             ThreeRepMax: xRepMax(lifts[i].max, 3),
-            FourRepMax: xRepMax(lifts[i].max, 4),
-            FiveRepMax: xRepMax(lifts[i].max, 5),})
+            FiveRepMax: xRepMax(lifts[i].max, 5),
+            TenRepMax: xRepMax(lifts[i].max, 10)})
     }
     // TODO: create the 'rowObjects' object programmatically from the lifts object
     function xRepMax(oneRepMax, reps) {

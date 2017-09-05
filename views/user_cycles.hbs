@@ -69,5 +69,24 @@
         </div>
     </div>
 </section>
+<section class="user_maxes">
+
+        {{#each lifts as |lift| }}
+
+    <div class="form-group">
+        <label for="repNumberInput" class="control-label">{{ lift.name}}</label>
+        <select id="repNumberInput" type="text" class="form-control" name="repNumber" placeholdfer="numberRepsmax" required>
+            <!--drop down rep max-->
+            <option selected="selected">1 Rep Max</option>
+            <option>3 Rep Max</option>
+            <option>5 Rep Max</option>
+            <option>10 Rep Max</option>
+
+
+        </select>
+        <input id="weightInput" type="text" class="form-control" name="weight" value="{{ liftWeight ../user lift.name 1 }}" placeholder="Weight" required>
+    </div>
+{{/each}}
+   </section>
 <!--link to javascript used-->
 <script src="/javascripts/addUserCycleForm.js"></script>

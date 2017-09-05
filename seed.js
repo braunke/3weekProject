@@ -8,12 +8,14 @@ function seed() {
     //creating initial data in database info found in web dev book
     Cycle.find(function (err, cycle) {
         if (err) return console.error(err);
-        if(cycle.length) return;
+        if (cycle.length) return;
 
-        function buildObjects(frontSquatId, backSquatId) {
+        function buildObjects(frontSquatId, backSquatId, benchId, strictPressId) {
             var TYPES = {
                 FSQUAT: frontSquatId,
-                BSQUAT: backSquatId
+                BSQUAT: backSquatId,
+                BENCH: benchId,
+                PRESS: strictPressId
 
             };
             var dayOne = {
@@ -26,7 +28,7 @@ function seed() {
                 }, {
                     weightPercentage: .75,
                     reps: 6
-                },{
+                }, {
                     weightPercentage: .80,
                     reps: 4
                 }],
@@ -42,7 +44,7 @@ function seed() {
                 }, {
                     weightPercentage: .75,
                     reps: 6
-                },{
+                }, {
                     weightPercentage: .80,
                     reps: 4
                 }],
@@ -58,10 +60,10 @@ function seed() {
                 }, {
                     weightPercentage: .70,
                     reps: 6
-                },{
+                }, {
                     weightPercentage: .75,
                     reps: 6
-                },{
+                }, {
                     weightPercentage: .80,
                     reps: 6
                 }],
@@ -77,16 +79,16 @@ function seed() {
                 }, {
                     weightPercentage: .70,
                     reps: 6
-                },{
+                }, {
                     weightPercentage: .75,
                     reps: 6
-                },{
+                }, {
                     weightPercentage: .80,
                     reps: 6
                 }],
                 movement: TYPES.FSQUAT
             };
-            var dayFive= {
+            var dayFive = {
                 sets: [{
                     weightPercentage: .65,
                     reps: 8
@@ -96,13 +98,13 @@ function seed() {
                 }, {
                     weightPercentage: .80,
                     reps: 6
-                },{
+                }, {
                     weightPercentage: .85,
                     reps: 6
                 }],
                 movement: TYPES.BSQUAT
             };
-            var daySix= {
+            var daySix = {
                 sets: [{
                     weightPercentage: .65,
                     reps: 8
@@ -112,13 +114,13 @@ function seed() {
                 }, {
                     weightPercentage: .80,
                     reps: 6
-                },{
+                }, {
                     weightPercentage: .85,
                     reps: 6
                 }],
                 movement: TYPES.FSQUAT
             };
-            var daySeven= {
+            var daySeven = {
                 sets: [{
                     weightPercentage: .65,
                     reps: 8
@@ -128,13 +130,13 @@ function seed() {
                 }, {
                     weightPercentage: .80,
                     reps: 6
-                },{
+                }, {
                     weightPercentage: .85,
                     reps: 6
                 }],
                 movement: TYPES.BSQUAT
             };
-            var dayEight= {
+            var dayEight = {
                 sets: [{
                     weightPercentage: .65,
                     reps: 8
@@ -144,13 +146,13 @@ function seed() {
                 }, {
                     weightPercentage: .80,
                     reps: 6
-                },{
+                }, {
                     weightPercentage: .85,
                     reps: 6
                 }],
                 movement: TYPES.FSQUAT
             };
-            var dayNine= {
+            var dayNine = {
                 sets: [{
                     weightPercentage: .65,
                     reps: 8
@@ -160,13 +162,13 @@ function seed() {
                 }, {
                     weightPercentage: .85,
                     reps: 4
-                },{
+                }, {
                     weightPercentage: .90,
                     reps: 4
                 }],
                 movement: TYPES.BSQUAT
             };
-            var dayTen= {
+            var dayTen = {
                 sets: [{
                     weightPercentage: .65,
                     reps: 8
@@ -176,13 +178,13 @@ function seed() {
                 }, {
                     weightPercentage: .85,
                     reps: 4
-                },{
+                }, {
                     weightPercentage: .90,
                     reps: 4
                 }],
                 movement: TYPES.FSQUAT
             };
-            var dayEleven= {
+            var dayEleven = {
                 sets: [{
                     weightPercentage: .70,
                     reps: 6
@@ -192,13 +194,13 @@ function seed() {
                 }, {
                     weightPercentage: .90,
                     reps: 3
-                },{
+                }, {
                     weightPercentage: .95,
                     reps: 2
                 }],
                 movement: TYPES.BSQUAT
             };
-            var dayTwelve= {
+            var dayTwelve = {
                 sets: [{
                     weightPercentage: .70,
                     reps: 6
@@ -208,13 +210,13 @@ function seed() {
                 }, {
                     weightPercentage: .90,
                     reps: 3
-                },{
+                }, {
                     weightPercentage: .95,
                     reps: 2
                 }],
                 movement: TYPES.FSQUAT
             };
-            var dayThirteen= {
+            var dayThirteen = {
                 sets: [{
                     weightPercentage: .70,
                     reps: 5
@@ -224,16 +226,16 @@ function seed() {
                 }, {
                     weightPercentage: .85,
                     reps: 2
-                },{
+                }, {
                     weightPercentage: .90,
                     reps: 3
-                },{
+                }, {
                     weightPercentage: 1,
                     reps: 1
                 }],
                 movement: TYPES.BSQUAT
             };
-            var dayForteen= {
+            var dayForteen = {
                 sets: [{
                     weightPercentage: .70,
                     reps: 5
@@ -243,16 +245,16 @@ function seed() {
                 }, {
                     weightPercentage: .85,
                     reps: 2
-                },{
+                }, {
                     weightPercentage: .90,
                     reps: 3
-                },{
+                }, {
                     weightPercentage: 1,
                     reps: 1
                 }],
                 movement: TYPES.FSQUAT
             };
-            var dayFifteen= {
+            var dayFifteen = {
                 sets: [{
                     weightPercentage: .65,
                     reps: 5
@@ -262,13 +264,13 @@ function seed() {
                 }, {
                     weightPercentage: .75,
                     reps: 5
-                },{
+                }, {
                     weightPercentage: .80,
                     reps: 5
                 }],
                 movement: TYPES.BSQUAT
             };
-            var daySixteen= {
+            var daySixteen = {
                 sets: [{
                     weightPercentage: .65,
                     reps: 5
@@ -278,13 +280,13 @@ function seed() {
                 }, {
                     weightPercentage: .75,
                     reps: 5
-                },{
+                }, {
                     weightPercentage: .80,
                     reps: 5
                 }],
                 movement: TYPES.FSQUAT
             };
-            var daySeventeen= {
+            var daySeventeen = {
                 sets: [{
                     weightPercentage: .60,
                     reps: 5
@@ -294,16 +296,16 @@ function seed() {
                 }, {
                     weightPercentage: .80,
                     reps: 2
-                },{
+                }, {
                     weightPercentage: .90,
                     reps: 2
-                },{
+                }, {
                     weightPercentage: .95,
                     reps: 1
                 }],
                 movement: TYPES.BSQUAT
             };
-            var dayEighteen= {
+            var dayEighteen = {
                 sets: [{
                     weightPercentage: .60,
                     reps: 5
@@ -313,16 +315,16 @@ function seed() {
                 }, {
                     weightPercentage: .80,
                     reps: 2
-                },{
+                }, {
                     weightPercentage: .90,
                     reps: 2
-                },{
+                }, {
                     weightPercentage: .95,
                     reps: 1
                 }],
                 movement: TYPES.FSQUAT
             };
-            var dayNineteen= {
+            var dayNineteen = {
                 sets: [{
                     weightPercentage: .60,
                     reps: 5
@@ -332,13 +334,13 @@ function seed() {
                 }, {
                     weightPercentage: .70,
                     reps: 5
-                },{
+                }, {
                     weightPercentage: .75,
                     reps: 5
                 }],
                 movement: TYPES.BSQUAT
             };
-            var dayTwenty= {
+            var dayTwenty = {
                 sets: [{
                     weightPercentage: .60,
                     reps: 5
@@ -348,13 +350,13 @@ function seed() {
                 }, {
                     weightPercentage: .70,
                     reps: 5
-                },{
+                }, {
                     weightPercentage: .75,
                     reps: 5
                 }],
                 movement: TYPES.FSQUAT
             };
-            var dayTwentyone= {
+            var dayTwentyone = {
                 sets: [{
                     weightPercentage: .60,
                     reps: 5
@@ -364,19 +366,19 @@ function seed() {
                 }, {
                     weightPercentage: .80,
                     reps: 2
-                },{
+                }, {
                     weightPercentage: .90,
                     reps: 2
-                },{
+                }, {
                     weightPercentage: .95,
                     reps: 1
-                },{
+                }, {
                     weightPercentage: 1.03,
                     reps: 1
                 }],
                 movement: TYPES.BSQUAT
             };
-            var dayTwentytwo= {
+            var dayTwentytwo = {
                 sets: [{
                     weightPercentage: .60,
                     reps: 5
@@ -386,19 +388,19 @@ function seed() {
                 }, {
                     weightPercentage: .80,
                     reps: 2
-                },{
+                }, {
                     weightPercentage: .90,
                     reps: 2
-                },{
+                }, {
                     weightPercentage: .95,
                     reps: 1
-                },{
+                }, {
                     weightPercentage: 1.03,
                     reps: 1
                 }],
                 movement: TYPES.FSQUAT
             };
-            var dayTwentythree= {
+            var dayTwentythree = {
                 sets: [{
                     weightPercentage: .60,
                     reps: 5
@@ -408,13 +410,13 @@ function seed() {
                 }, {
                     weightPercentage: .75,
                     reps: 5
-                },{
+                }, {
                     weightPercentage: .75,
                     reps: 5
                 }],
                 movement: TYPES.BSQUAT
             };
-            var dayTwentyfour= {
+            var dayTwentyfour = {
                 sets: [{
                     weightPercentage: .60,
                     reps: 5
@@ -424,7 +426,7 @@ function seed() {
                 }, {
                     weightPercentage: .75,
                     reps: 5
-                },{
+                }, {
                     weightPercentage: .75,
                     reps: 5
                 }],
@@ -436,29 +438,29 @@ function seed() {
                     days: [dayOne, dayTwo]
                 }, {
                     days: [dayThree, dayFour]
-                },{
+                }, {
                     days: [dayFive, daySix]
-                },{
+                }, {
                     days: [daySeven, dayEight]
-                },{
+                }, {
                     days: [dayNine, dayTen]
-                },{
+                }, {
                     days: [dayEleven, dayTwelve]
-                },{
+                }, {
                     days: [dayThirteen, dayForteen]
-                },{
+                }, {
                     days: [dayFifteen, daySixteen]
-                },{
+                }, {
                     days: [daySeventeen, dayEighteen]
-                },{
+                }, {
                     days: [dayNineteen, dayTwenty]
-                },{
+                }, {
                     days: [dayTwentyone, dayTwentytwo]
                 }, {
                     days: [dayTwentythree, dayTwentyfour]
                 }]
             };
-            user =  {
+            user = {
                 name: 'Jim',
                 bar: 33,
                 Max: [{
@@ -467,26 +469,37 @@ function seed() {
                 }, {
                     LiftType: TYPES.FSQUAT,
                     Weight: 100
+                }, {
+                    LiftType: TYPES.BENCH,
+                    Weight: 123
+                }, {
+                    LiftType: TYPES.PRESS,
+                    Weight: 67
                 }]
             };
         }
+
         var user, liftingProgram;
 
-        new Lift({name: 'Front Squat'}).save(function(err, frontSquat) {
-            new Lift({name: 'Back Squat'}).save(function(err, backSquat) {
-                buildObjects(frontSquat._id, backSquat._id);
-                new User (user).save(function(err, newUser) {
-                    new Cycle (liftingProgram).save(function(err, newCycle) {
-                        new UserCycle({
-                            startDate: new Date(),
-                            user: newUser._id,
-                            cycle: newCycle._id
-                        }).save();
+        new Lift({name: 'Front Squat'}).save(function (err, frontSquat) {
+            new Lift({name: 'Back Squat'}).save(function (err, backSquat) {
+                new Lift({name: 'Bench Press'}).save(function (err, benchPress) {
+                    new Lift({name: 'Strict Press'}).save(function (err, strictPress) {
+                        buildObjects(frontSquat._id, backSquat._id, benchPress._id, strictPress._id);
+                    new User(user).save(function (err, newUser) {
+                        new Cycle(liftingProgram).save(function (err, newCycle) {
+                            new UserCycle({
+                                startDate: new Date(),
+                                user: newUser._id,
+                                cycle: newCycle._id
+                            }).save();
+                        });
                     });
                 });
             });
-        });
 
+        });
     });
+});
 }
 module.exports = seed;
