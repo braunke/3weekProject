@@ -73,7 +73,7 @@
 
         {{#each lifts as |lift| }}
 
-    <div class="form-group">
+    <div class="form-group liftStuff " >
         <label for="repNumberInput" class="control-label">{{ lift.name}}</label>
         <select id="repNumberInput" type="text" class="form-control" name="repNumber" placeholdfer="numberRepsmax" required>
             <!--drop down rep max-->
@@ -90,3 +90,212 @@
    </section>
 <!--link to javascript used-->
 <script src="/javascripts/addUserCycleForm.js"></script>
+
+<!--used this site for graph idea https://bl.ocks.org/mbostock/3887051-->
+<style>
+
+    .axis .domain {
+        display: none;
+    }
+
+</style>
+<svg width="960" height="500"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<script>
+    //grabs the info from the input boxes
+$(".liftStuff").each(function(index){
+    console.log(index , $(this).children(".control-label").text())
+    console.log(index, $(this).children('select').children('option:selected').val())
+});
+
+    function graphFunction() {
+        var svg = d3.select("svg"),
+                //adjusts the size of the graph
+                margin = {top: 20, right: 20, bottom: 30, left: 40},
+                width = +svg.attr("width") - margin.left - margin.right,
+                height = +svg.attr("height") - margin.top - margin.bottom,
+                g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        //where the graph begins from sides
+        var x0 = d3.scaleBand()
+                .rangeRound([0, width])
+                .paddingInner(0.1);
+        //padding around bars
+        var x1 = d3.scaleBand()
+                .padding(0.05);
+        //graph begins on height
+        var y = d3.scaleLinear()
+                .rangeRound([height, 0]);
+        //color of the bars
+        var z = d3.scaleOrdinal()
+                .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+        var lifts = [{
+            name: 'Back Squat',
+            max: 283
+        }, {
+            name: 'Front Squat',
+            max: 243
+        }, {
+            name: 'Strict Press',
+            max: 103
+        }];
+        var rowObjects = [];
+        for (i = 0; i < lifts.length; i++) {
+            rowObjects.push({
+                MaxLift: lifts[i].name,
+                OneRepMax: lifts[i].max,
+                ThreeRepMax: xRepMax(lifts[i].max, .906),
+                FiveRepMax: xRepMax(lifts[i].max, .856),
+                TenRepMax: xRepMax(lifts[i].max, .744)
+            })
+        }
+        //http://www.timinvermont.com/fitness/orm.htm calculations
+        // calculates xRep maxes from 1rep max
+        function xRepMax(oneRepMax, coefficient) {
+            xRep = oneRepMax * coefficient;
+            return Math.round(xRep);
+        }
+
+        //calculates oneRepMa from xrepmax
+        function oneRepMax(xRepMax, reps) {
+            return xRepMax / (1.0278 - (.0278 * reps));
+        }
+
+        //   var zero = {MaxLift:"BackSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
+        ////   var one = {MaxLift:"FrontSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
+        //  var two = {MaxLift:"StrictPress", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
+        //    var rowObjects = [zero, one, two];
+        rowObjects.columns = ["MaxLift", "OneRepMax", "ThreeRepMax", "FiveRepMax", "TenRepMax"];
+        //d3.csv("data/data.csv", function(rowObject, i, liftNames) {
+
+        //   for (var columnIndex = 1; columnIndex < liftNames.length; ++columnIndex) {
+        //the '+' turns the data into numbers
+        //         var liftName = liftNames[columnIndex]
+        //          rowObject[liftName] = +rowObject[liftName];
+        //      }
+        //       return rowObject;
+        //  }, function(error, rowObjects) {
+        console.log(rowObjects)
+        //  if (error) throw error;
+        // grabs the keys to access numeric data
+        var keys = rowObjects.columns.slice(1);
+
+        // assign the x-axis width / labels for the bar groups
+        x0.domain(rowObjects.map(function (rowObject) {
+            return rowObject.MaxLift;
+        }));
+
+        // assign the x-axis width for the bars within bar groups
+        x1.domain(keys).rangeRound([0, x0.bandwidth()]);
+        y.domain([0, d3.max(rowObjects, function (d) {
+            return d3.max(keys, function (key) {
+                return d[key];
+            });
+        })]).nice();
+
+        var yTextPadding = 20;
+
+        var bars = g.append("g")
+                .selectAll("g")
+                .data(rowObjects)
+                .enter().append("g")
+                //offsetting bar groups from the left side
+                .attr("transform", function (d, i) {
+                    return "translate(" + x0(d.MaxLift) + ",0)";
+                })
+                .selectAll("rect")
+                //returns a list of the key value objects
+                //sets data to bar group
+                .data(function (d) {
+                    return keys.map(function (key) {
+                        return {
+                            key: key,
+                            value: d[key]
+                        };
+                    });
+                });
+        // creates bar rectangle
+        bars.enter().append("rect")
+        //calling to configure spacing within bar group
+                .attr("x", function (d) {
+                    return x1(d.key);
+                })
+                //where y start, location of the bar
+                .attr("y", function (d) {
+                    return y(d.value);
+                })
+                .attr("width", x1.bandwidth())
+                .attr("height", function (d) {
+                    return height - y(d.value);
+                })
+                .attr("fill", function (d) {
+                    return z(d.key);
+                });
+        // creates text on bar
+        //used this site for idea on how to add text http://www.cagrimmett.com/til/2016/04/26/responsive-d3-bar-chart.html
+        bars.enter().append("text")
+                .attr("x", function (d) {
+                    return x1(d.key);
+                }) // xScale(d.food); })
+                .attr("y", function (d) {
+                    return y(d.value);
+                }) // yScale(d.quantity); })
+                .attr("dy", ".75em")
+
+                .attr("width", x1.bandwidth())
+                .attr("height", function (d) {
+                    return height - y(d.value);
+                })
+
+                .text(function (d) {
+                    return d.value;
+                });
+        g.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x0));
+
+        g.append("g")
+                .attr("class", "axis")
+                .call(d3.axisLeft(y).ticks(null, "s"))
+                //graph title attributes
+                .append("text")
+                .attr("x", 2)
+                .attr("y", y(y.ticks().pop()) + 0.5)
+                .attr("dy", "0.32em")
+                .attr("fill", "#000")
+                .attr("font-weight", "bold")
+                .attr("text-anchor", "start")
+                .text("Max Lifts");
+        //legend attributes
+        var legend = g.append("g")
+                .attr("font-family", "sans-serif")
+                .attr("font-size", 10)
+                .attr("text-anchor", "end")
+                .selectAll("g")
+                .data(keys.slice().reverse())
+                .enter().append("g")
+                .attr("transform", function (d, i) {
+                    return "translate(0," + i * 20 + ")";
+                });
+        //legend dimensions
+        legend.append("rect")
+                .attr("x", width - 19)
+                .attr("width", 19)
+                .attr("height", 19)
+                .attr("fill", z);
+
+        legend.append("text")
+                .attr("x", width - 24)
+                .attr("y", 9.5)
+                .attr("dy", "0.32em")
+                .text(function (d) {
+                    return d;
+                });
+        // });
+    }
+
+</script>
+
+
