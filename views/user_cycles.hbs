@@ -77,17 +77,20 @@
         <label for="repNumberInput" class="control-label">{{ lift.name}}</label>
         <select id="repNumberInput" type="text" class="form-control" name="repNumber" placeholdfer="numberRepsmax" required>
             <!--drop down rep max-->
-            <option selected="selected">1 Rep Max</option>
-            <option>3 Rep Max</option>
-            <option>5 Rep Max</option>
-            <option>10 Rep Max</option>
+            <option selected="selected" value="1">1 Rep Max</option>
+            <option value="3">3 Rep Max</option>
+            <option value ="5">5 Rep Max</option>
+            <option value = "10">10 Rep Max</option>
 
 
         </select>
         <input id="weightInput" type="text" class="form-control" name="weight" value="{{ liftWeight ../user lift.name 1 }}" placeholder="Weight" required>
+
     </div>
 {{/each}}
-   </section>
+    <button onclick="buildGraph()" type="button" class="btn btn-default col-xs-6">Build Graph</button>
+
+</section>
 <!--link to javascript used-->
 <script src="/javascripts/addUserCycleForm.js"></script>
 
@@ -103,13 +106,24 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 
 <script>
-    //grabs the info from the input boxes
-$(".liftStuff").each(function(index){
-    console.log(index , $(this).children(".control-label").text())
-    console.log(index, $(this).children('select').children('option:selected').val())
-});
 
-    function graphFunction() {
+    //grabs the info from the input boxes and creates the lift array used to create graph
+   function buildGraph() {
+       $('svg').empty();
+       var lifts = [];
+       $(".liftStuff").each(function (index) {
+           namef = $(this).children(".control-label").text();
+           amountreps = $(this).children('select').children('option:selected').val();
+           weight = $(this).children('input').val();
+           anotherliftthing = {name: namef, max: weight};
+           lifts.push(anotherliftthing)
+       });
+
+
+       console.log(lifts)
+       graphFunction(lifts)
+   }
+    function graphFunction(lifts) {
         var svg = d3.select("svg"),
                 //adjusts the size of the graph
                 margin = {top: 20, right: 20, bottom: 30, left: 40},
@@ -130,24 +144,15 @@ $(".liftStuff").each(function(index){
         var z = d3.scaleOrdinal()
                 .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-        var lifts = [{
-            name: 'Back Squat',
-            max: 283
-        }, {
-            name: 'Front Squat',
-            max: 243
-        }, {
-            name: 'Strict Press',
-            max: 103
-        }];
+
         var rowObjects = [];
         for (i = 0; i < lifts.length; i++) {
             rowObjects.push({
                 MaxLift: lifts[i].name,
-                OneRepMax: lifts[i].max,
-                ThreeRepMax: xRepMax(lifts[i].max, .906),
-                FiveRepMax: xRepMax(lifts[i].max, .856),
-                TenRepMax: xRepMax(lifts[i].max, .744)
+                OneRepMax: xRepMax(oneRepMax(lifts[i].max, 1), 1),
+                ThreeRepMax: xRepMax(oneRepMax(lifts[i].max, 3), .906),
+                FiveRepMax: xRepMax(oneRepMax(lifts[i].max, 5), .856),
+                TenRepMax: xRepMax(oneRepMax(lifts[i].max, 10), .744)
             })
         }
         //http://www.timinvermont.com/fitness/orm.htm calculations
@@ -159,7 +164,8 @@ $(".liftStuff").each(function(index){
 
         //calculates oneRepMa from xrepmax
         function oneRepMax(xRepMax, reps) {
-            return xRepMax / (1.0278 - (.0278 * reps));
+            console.log("f", xRepMax / (1.0278 - (.0278 * reps)))
+            return( xRepMax / (1.0278 - (.0278 * reps)));
         }
 
         //   var zero = {MaxLift:"BackSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
