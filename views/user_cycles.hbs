@@ -115,7 +115,7 @@
            namef = $(this).children(".control-label").text();
            amountreps = $(this).children('select').children('option:selected').val();
            weight = $(this).children('input').val();
-           anotherliftthing = {name: namef, max: weight};
+           anotherliftthing = {name: namef, max: weight, reps: amountreps};
            lifts.push(anotherliftthing)
        });
 
@@ -147,24 +147,23 @@
 
         var rowObjects = [];
         for (i = 0; i < lifts.length; i++) {
+            var oneRM = oneRepMax(lifts[i].max, lifts[i].reps);
             rowObjects.push({
                 MaxLift: lifts[i].name,
-                OneRepMax: xRepMax(oneRepMax(lifts[i].max, 1), 1),
-                ThreeRepMax: xRepMax(oneRepMax(lifts[i].max, 3), .906),
-                FiveRepMax: xRepMax(oneRepMax(lifts[i].max, 5), .856),
-                TenRepMax: xRepMax(oneRepMax(lifts[i].max, 10), .744)
+                OneRepMax: xRepMax(oneRM, 1),
+                ThreeRepMax: xRepMax(oneRM, 3),
+                FiveRepMax: xRepMax(oneRM, 5),
+                TenRepMax: xRepMax(oneRM, 10)
             })
         }
         //http://www.timinvermont.com/fitness/orm.htm calculations
         // calculates xRep maxes from 1rep max
-        function xRepMax(oneRepMax, coefficient) {
-            xRep = oneRepMax * coefficient;
-            return Math.round(xRep);
+        function xRepMax(oneRepMax, reps) {
+            return Math.round((1.0278 - (.0278 * reps)) * oneRepMax);
         }
 
         //calculates oneRepMa from xrepmax
         function oneRepMax(xRepMax, reps) {
-            console.log("f", xRepMax / (1.0278 - (.0278 * reps)))
             return( xRepMax / (1.0278 - (.0278 * reps)));
         }
 
