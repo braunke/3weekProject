@@ -106,17 +106,16 @@
        $('svg').empty();
        var lifts = [];
        $(".liftStuff").each(function (index) {
-           namef = $(this).children(".control-label").text();
+           nameLift = $(this).children(".control-label").text();
            amountreps = $(this).children('select').children('option:selected').val();
            weight = $(this).children('input').val();
-           anotherliftthing = {name: namef, max: weight, reps: amountreps};
+           anotherliftthing = {name: nameLift, max: weight, reps: amountreps};
            lifts.push(anotherliftthing)
        });
 
-
-       console.log(lifts)
        graphFunction(lifts)
    }
+   //creates graph attributes
     function graphFunction(lifts) {
         var svg = d3.select("svg"),
                 //adjusts the size of the graph
@@ -138,7 +137,7 @@
         var z = d3.scaleOrdinal()
                 .range(["#66CDAA", "#D8BFD8", "#B0C4DE", "#6495ED"]);
 
-
+        //numbers being used
         var rowObjects = [];
         for (i = 0; i < lifts.length; i++) {
             var oneRM = oneRepMax(lifts[i].max, lifts[i].reps);
@@ -155,30 +154,13 @@
         function xRepMax(oneRepMax, reps) {
             return Math.round((1.0278 - (.0278 * reps)) * oneRepMax);
         }
-
-        //calculates oneRepMa from xrepmax
+        //calculates oneRepMax from xrepmax
         function oneRepMax(xRepMax, reps) {
             return( xRepMax / (1.0278 - (.0278 * reps)));
         }
 
-        //   var zero = {MaxLift:"BackSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
-        ////   var one = {MaxLift:"FrontSquat", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
-        //  var two = {MaxLift:"StrictPress", OneRepMax: 284, TwoRepMax: 133, ThreeRepMax: 243, FourRepMax: 128, FiveRepMax: 54}
-        //    var rowObjects = [zero, one, two];
-        rowObjects.columns = ["MaxLift", "OneRepMax", "ThreeRepMax", "FiveRepMax", "TenRepMax"];
-        //d3.csv("data/data.csv", function(rowObject, i, liftNames) {
-
-        //   for (var columnIndex = 1; columnIndex < liftNames.length; ++columnIndex) {
-        //the '+' turns the data into numbers
-        //         var liftName = liftNames[columnIndex]
-        //          rowObject[liftName] = +rowObject[liftName];
-        //      }
-        //       return rowObject;
-        //  }, function(error, rowObjects) {
-        console.log(rowObjects)
-        //  if (error) throw error;
-        // grabs the keys to access numeric data
-        var keys = rowObjects.columns.slice(1);
+        //rowObjects.columns = ["OneRepMax", "ThreeRepMax", "FiveRepMax", "TenRepMax"];
+        var keys = ["OneRepMax", "ThreeRepMax", "FiveRepMax", "TenRepMax"];
 
         // assign the x-axis width / labels for the bar groups
         x0.domain(rowObjects.map(function (rowObject) {
@@ -236,23 +218,26 @@
         bars.enter().append("text")
                 .attr("x", function (d) {
                     return x1(d.key);
-                }) // xScale(d.food); })
+                })
                 .attr("y", function (d) {
                     return y(d.value);
-                }) // yScale(d.quantity); })
-                .attr("dy", ".75em")
-
+                })
+                //placement on bar
+                .attr("dy", "1em")
+                .attr("dx", ".85em")
                 .attr("width", x1.bandwidth())
                 .attr("height", function (d) {
                     return height - y(d.value);
                 })
 
                 .text(function (d) {
+
                     return d.value;
                 });
         g.append("g")
                 .attr("class", "axis")
                 .attr("transform", "translate(0," + height + ")")
+                .attr("font-weight", "bold")
                 .call(d3.axisBottom(x0));
 
         g.append("g")
@@ -270,23 +255,23 @@
         //legend attributes
         var legend = g.append("g")
                 .attr("font-family", "sans-serif")
-                .attr("font-size", 10)
+                .attr("font-size", 16)
                 .attr("text-anchor", "end")
                 .selectAll("g")
-                .data(keys.slice().reverse())
+                .data(keys.slice())
                 .enter().append("g")
                 .attr("transform", function (d, i) {
                     return "translate(0," + i * 20 + ")";
                 });
-        //legend dimensions
+        //legend box dimensions
         legend.append("rect")
                 .attr("x", width - 19)
                 .attr("width", 19)
                 .attr("height", 19)
                 .attr("fill", z);
-
+        //legend text placement
         legend.append("text")
-                .attr("x", width - 24)
+                .attr("x", width - 20)
                 .attr("y", 9.5)
                 .attr("dy", "0.32em")
                 .text(function (d) {
