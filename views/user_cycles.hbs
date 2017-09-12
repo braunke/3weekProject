@@ -88,25 +88,19 @@
 
     </div>
 {{/each}}
-    <button onclick="buildGraph()" type="button" class="btn btn-default col-xs-6">Build Graph</button>
+    <button onclick="buildGraph()" type="button" class="btn btn-primary col-xs-6">Refresh Graph</button>
 
 </section>
 <!--link to javascript used-->
 <script src="/javascripts/addUserCycleForm.js"></script>
 
 <!--used this site for graph idea https://bl.ocks.org/mbostock/3887051-->
-<style>
 
-    .axis .domain {
-        display: none;
-    }
-
-</style>
 <svg width="960" height="500"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 
 <script>
-
+   buildGraph();
     //grabs the info from the input boxes and creates the lift array used to create graph
    function buildGraph() {
        $('svg').empty();
@@ -142,7 +136,7 @@
                 .rangeRound([height, 0]);
         //color of the bars
         var z = d3.scaleOrdinal()
-                .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+                .range(["#66CDAA", "#D8BFD8", "#B0C4DE", "#6495ED"]);
 
 
         var rowObjects = [];
