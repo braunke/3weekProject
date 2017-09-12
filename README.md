@@ -2,24 +2,18 @@
 <h1>Lifting Program Project</h1>
 
 <h2>Running</h2>
-<p>To run locally jsut need to set a local mongo conenction for the url.</p>
+<p>To run locally just need to set a local mongo conenction for the url.</p>
 
 <h2>About</h2>
 <br>
 <p>
-    This project is meant to help users calculate what they need to lift for different weight cycles that are based
-    off of percentages of their one rep max for different lifts. It calculates the correct weight needs for different
-    sets and also gives them an overview of what the cycle looks like. The program also show the correct loading of the barbell
-    so there is no second guessing at the gym.
+    This project is a continuation of my previous weight lifting program. I have added a graph feature for users. The system
+    auto populates the graph with the users entered maxes and create a graph showing their 1rep, 3rep, 5rep and 10rep max potentials
+    based on the entered information. The user can then use this to calculate out a 10rep max (or 3 or 5) potential based on a 1rep max or
+    vise versa, all depending on their input choice.
+    Heroku link https://mighty-hollows-12075.herokuapp.com/
 </p>
-<br>
 
-<br>
-<h5>
-    About the Hatch Cycle
-</h5>
-<p>
-    For the Hatch Cycle you are lifting varying rep schemes based on different percentages of your one rep max for
-    both the front and the back squat. For example, on day one the sets is 1X10 at 60%. If your one rep max is 200lbs
-    for the back squat, 60% of that would be 120 and you would lift that 10 times.
-</p>
+
+
+
