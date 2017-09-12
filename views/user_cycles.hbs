@@ -75,16 +75,15 @@
 
     <div class="form-group liftStuff " >
         <label for="repNumberInput" class="control-label">{{ lift.name}}</label>
-        <select id="repNumberInput" type="text" class="form-control" name="repNumber" placeholdfer="numberRepsmax" required>
+        <select id="repNumberInput" type="text" class="form-control" name="repNumber" placeholder="numberRepsmax" required>
             <!--drop down rep max-->
             <option selected="selected" value="1">1 Rep Max</option>
             <option value="3">3 Rep Max</option>
             <option value ="5">5 Rep Max</option>
             <option value = "10">10 Rep Max</option>
 
-
         </select>
-        <input id="weightInput" type="text" class="form-control" name="weight" value="{{ liftWeight ../user lift.name 1 }}" placeholder="Weight" required>
+        <input id="weightInput" type="number" class="form-control" name="weight" value="{{ liftWeight ../user lift.name 1 }}" placeholder="Weight" required>
 
     </div>
 {{/each}}
@@ -108,7 +107,7 @@
        $(".liftStuff").each(function (index) {
            nameLift = $(this).children(".control-label").text();
            amountreps = $(this).children('select').children('option:selected').val();
-           weight = $(this).children('input').val();
+           weight = $(this).children('input').val() || 0;
            anotherliftthing = {name: nameLift, max: weight, reps: amountreps};
            lifts.push(anotherliftthing)
        });
